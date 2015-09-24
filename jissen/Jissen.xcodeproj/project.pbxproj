@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6099A7E41BB39E0D00436AA1 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099A7E31BB39E0D00436AA1 /* TableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		60CE85C01BB254F70086FB0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85BF1BB254F70086FB0D /* main.m */; };
 		60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C21BB254F70086FB0D /* AppDelegate.m */; };
 		60CE85C61BB254F70086FB0D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C51BB254F70086FB0D /* ViewController.m */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6099A7E21BB39E0D00436AA1 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		6099A7E31BB39E0D00436AA1 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		60CE85BB1BB254F70086FB0D /* Jissen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jissen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60CE85BF1BB254F70086FB0D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		60CE85C11BB254F70086FB0D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -101,6 +104,8 @@
 			children = (
 				60CE85C11BB254F70086FB0D /* AppDelegate.h */,
 				60CE85C21BB254F70086FB0D /* AppDelegate.m */,
+				6099A7E21BB39E0D00436AA1 /* TableViewController.h */,
+				6099A7E31BB39E0D00436AA1 /* TableViewController.m */,
 				60CE85C41BB254F70086FB0D /* ViewController.h */,
 				60CE85C51BB254F70086FB0D /* ViewController.m */,
 				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
@@ -268,6 +273,7 @@
 				60CE85C61BB254F70086FB0D /* ViewController.m in Sources */,
 				60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */,
 				60CE85C01BB254F70086FB0D /* main.m in Sources */,
+				6099A7E41BB39E0D00436AA1 /* TableViewController.m in Sources */,
 				60CE85CC1BB254F70086FB0D /* Jissen.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -475,6 +481,7 @@
 				60CE85ED1BB254F70086FB0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60CE85EE1BB254F70086FB0D /* Build configuration list for PBXNativeTarget "JissenTests" */ = {
 			isa = XCConfigurationList;
@@ -483,6 +490,7 @@
 				60CE85F01BB254F70086FB0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60CE85F11BB254F70086FB0D /* Build configuration list for PBXNativeTarget "JissenUITests" */ = {
 			isa = XCConfigurationList;
@@ -491,6 +499,7 @@
 				60CE85F31BB254F70086FB0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
