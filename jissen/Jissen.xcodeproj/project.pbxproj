@@ -1,0 +1,511 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		60CE85C01BB254F70086FB0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85BF1BB254F70086FB0D /* main.m */; };
+		60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C21BB254F70086FB0D /* AppDelegate.m */; };
+		60CE85C61BB254F70086FB0D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C51BB254F70086FB0D /* ViewController.m */; };
+		60CE85CC1BB254F70086FB0D /* Jissen.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */; };
+		60CE85CE1BB254F70086FB0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60CE85CD1BB254F70086FB0D /* Assets.xcassets */; };
+		60CE85DC1BB254F70086FB0D /* JissenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85DB1BB254F70086FB0D /* JissenTests.m */; };
+		60CE85E71BB254F70086FB0D /* JissenUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85E61BB254F70086FB0D /* JissenUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		60CE85D81BB254F70086FB0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60CE85B31BB254F70086FB0D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60CE85BA1BB254F70086FB0D;
+			remoteInfo = Jissen;
+		};
+		60CE85E31BB254F70086FB0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60CE85B31BB254F70086FB0D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60CE85BA1BB254F70086FB0D;
+			remoteInfo = Jissen;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		60CE85BB1BB254F70086FB0D /* Jissen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jissen.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		60CE85BF1BB254F70086FB0D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		60CE85C11BB254F70086FB0D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		60CE85C21BB254F70086FB0D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		60CE85C41BB254F70086FB0D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		60CE85C51BB254F70086FB0D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Jissen.xcdatamodel; sourceTree = "<group>"; };
+		60CE85CD1BB254F70086FB0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		60CE85D21BB254F70086FB0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60CE85D71BB254F70086FB0D /* JissenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JissenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60CE85DB1BB254F70086FB0D /* JissenTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JissenTests.m; sourceTree = "<group>"; };
+		60CE85DD1BB254F70086FB0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60CE85E21BB254F70086FB0D /* JissenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JissenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60CE85E61BB254F70086FB0D /* JissenUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JissenUITests.m; sourceTree = "<group>"; };
+		60CE85E81BB254F70086FB0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		60CE85B81BB254F70086FB0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60CE85D41BB254F70086FB0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60CE85DF1BB254F70086FB0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		60CE85B21BB254F70086FB0D = {
+			isa = PBXGroup;
+			children = (
+				60CE85BD1BB254F70086FB0D /* Jissen */,
+				60CE85DA1BB254F70086FB0D /* JissenTests */,
+				60CE85E51BB254F70086FB0D /* JissenUITests */,
+				60CE85BC1BB254F70086FB0D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		60CE85BC1BB254F70086FB0D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				60CE85BB1BB254F70086FB0D /* Jissen.app */,
+				60CE85D71BB254F70086FB0D /* JissenTests.xctest */,
+				60CE85E21BB254F70086FB0D /* JissenUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		60CE85BD1BB254F70086FB0D /* Jissen */ = {
+			isa = PBXGroup;
+			children = (
+				60CE85C11BB254F70086FB0D /* AppDelegate.h */,
+				60CE85C21BB254F70086FB0D /* AppDelegate.m */,
+				60CE85C41BB254F70086FB0D /* ViewController.h */,
+				60CE85C51BB254F70086FB0D /* ViewController.m */,
+				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
+				60CE85D21BB254F70086FB0D /* Info.plist */,
+				60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */,
+				60CE85BE1BB254F70086FB0D /* Supporting Files */,
+			);
+			path = Jissen;
+			sourceTree = "<group>";
+		};
+		60CE85BE1BB254F70086FB0D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				60CE85BF1BB254F70086FB0D /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		60CE85DA1BB254F70086FB0D /* JissenTests */ = {
+			isa = PBXGroup;
+			children = (
+				60CE85DB1BB254F70086FB0D /* JissenTests.m */,
+				60CE85DD1BB254F70086FB0D /* Info.plist */,
+			);
+			path = JissenTests;
+			sourceTree = "<group>";
+		};
+		60CE85E51BB254F70086FB0D /* JissenUITests */ = {
+			isa = PBXGroup;
+			children = (
+				60CE85E61BB254F70086FB0D /* JissenUITests.m */,
+				60CE85E81BB254F70086FB0D /* Info.plist */,
+			);
+			path = JissenUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		60CE85BA1BB254F70086FB0D /* Jissen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60CE85EB1BB254F70086FB0D /* Build configuration list for PBXNativeTarget "Jissen" */;
+			buildPhases = (
+				60CE85B71BB254F70086FB0D /* Sources */,
+				60CE85B81BB254F70086FB0D /* Frameworks */,
+				60CE85B91BB254F70086FB0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Jissen;
+			productName = Jissen;
+			productReference = 60CE85BB1BB254F70086FB0D /* Jissen.app */;
+			productType = "com.apple.product-type.application";
+		};
+		60CE85D61BB254F70086FB0D /* JissenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60CE85EE1BB254F70086FB0D /* Build configuration list for PBXNativeTarget "JissenTests" */;
+			buildPhases = (
+				60CE85D31BB254F70086FB0D /* Sources */,
+				60CE85D41BB254F70086FB0D /* Frameworks */,
+				60CE85D51BB254F70086FB0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				60CE85D91BB254F70086FB0D /* PBXTargetDependency */,
+			);
+			name = JissenTests;
+			productName = JissenTests;
+			productReference = 60CE85D71BB254F70086FB0D /* JissenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		60CE85E11BB254F70086FB0D /* JissenUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60CE85F11BB254F70086FB0D /* Build configuration list for PBXNativeTarget "JissenUITests" */;
+			buildPhases = (
+				60CE85DE1BB254F70086FB0D /* Sources */,
+				60CE85DF1BB254F70086FB0D /* Frameworks */,
+				60CE85E01BB254F70086FB0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				60CE85E41BB254F70086FB0D /* PBXTargetDependency */,
+			);
+			name = JissenUITests;
+			productName = JissenUITests;
+			productReference = 60CE85E21BB254F70086FB0D /* JissenUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		60CE85B31BB254F70086FB0D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Satoru Sasozaki";
+				TargetAttributes = {
+					60CE85BA1BB254F70086FB0D = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					60CE85D61BB254F70086FB0D = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 60CE85BA1BB254F70086FB0D;
+					};
+					60CE85E11BB254F70086FB0D = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 60CE85BA1BB254F70086FB0D;
+					};
+				};
+			};
+			buildConfigurationList = 60CE85B61BB254F70086FB0D /* Build configuration list for PBXProject "Jissen" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 60CE85B21BB254F70086FB0D;
+			productRefGroup = 60CE85BC1BB254F70086FB0D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				60CE85BA1BB254F70086FB0D /* Jissen */,
+				60CE85D61BB254F70086FB0D /* JissenTests */,
+				60CE85E11BB254F70086FB0D /* JissenUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		60CE85B91BB254F70086FB0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60CE85CE1BB254F70086FB0D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60CE85D51BB254F70086FB0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60CE85E01BB254F70086FB0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		60CE85B71BB254F70086FB0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60CE85C61BB254F70086FB0D /* ViewController.m in Sources */,
+				60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */,
+				60CE85C01BB254F70086FB0D /* main.m in Sources */,
+				60CE85CC1BB254F70086FB0D /* Jissen.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60CE85D31BB254F70086FB0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60CE85DC1BB254F70086FB0D /* JissenTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60CE85DE1BB254F70086FB0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60CE85E71BB254F70086FB0D /* JissenUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		60CE85D91BB254F70086FB0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60CE85BA1BB254F70086FB0D /* Jissen */;
+			targetProxy = 60CE85D81BB254F70086FB0D /* PBXContainerItemProxy */;
+		};
+		60CE85E41BB254F70086FB0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60CE85BA1BB254F70086FB0D /* Jissen */;
+			targetProxy = 60CE85E31BB254F70086FB0D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		60CE85E91BB254F70086FB0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		60CE85EA1BB254F70086FB0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		60CE85EC1BB254F70086FB0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Jissen/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = satorusasozaki.Jissen;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		60CE85ED1BB254F70086FB0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Jissen/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = satorusasozaki.Jissen;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		60CE85EF1BB254F70086FB0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = JissenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = satorusasozaki.JissenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jissen.app/Jissen";
+			};
+			name = Debug;
+		};
+		60CE85F01BB254F70086FB0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = JissenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = satorusasozaki.JissenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jissen.app/Jissen";
+			};
+			name = Release;
+		};
+		60CE85F21BB254F70086FB0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = JissenUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = satorusasozaki.JissenUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Jissen;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		60CE85F31BB254F70086FB0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = JissenUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = satorusasozaki.JissenUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Jissen;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		60CE85B61BB254F70086FB0D /* Build configuration list for PBXProject "Jissen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60CE85E91BB254F70086FB0D /* Debug */,
+				60CE85EA1BB254F70086FB0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		60CE85EB1BB254F70086FB0D /* Build configuration list for PBXNativeTarget "Jissen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60CE85EC1BB254F70086FB0D /* Debug */,
+				60CE85ED1BB254F70086FB0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		60CE85EE1BB254F70086FB0D /* Build configuration list for PBXNativeTarget "JissenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60CE85EF1BB254F70086FB0D /* Debug */,
+				60CE85F01BB254F70086FB0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		60CE85F11BB254F70086FB0D /* Build configuration list for PBXNativeTarget "JissenUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60CE85F21BB254F70086FB0D /* Debug */,
+				60CE85F31BB254F70086FB0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */,
+			);
+			currentVersion = 60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */;
+			path = Jissen.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 60CE85B31BB254F70086FB0D /* Project object */;
+}
