@@ -36,16 +36,15 @@
     /*the search bar widht must be > 1, the height must be at least 44
      (the real size of the search bar)*/
     
-    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    /*contents controller is the UITableViewController, this let you to reuse
-     the same TableViewController Delegate method used for the main table.*/
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonCountry",@"Country"),
+                                                          NSLocalizedString(@"ScopeButtonCapital",@"Capital")];
+    self.searchController.searchBar.delegate = self;
     
-    searchDisplayController.delegate = self;
-    searchDisplayController.searchResultsDataSource = self;
-    //set the delegate = self. Previously declared in ViewController.h
-    
-    self.tableView.tableHeaderView = searchBar; //this line add the searchBar
-    //on the top of tableView.
+    self.tableView.tableHeaderView = self.searchController.searchBar;    //on the top of tableView.
+    self.definesPresentationContext = YES;
 }
 
 - (void)didReceiveMemoryWarning {

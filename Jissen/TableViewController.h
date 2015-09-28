@@ -14,7 +14,8 @@
     NSMutableArray *searchData;
     
     UISearchBar *searchBar;
-    UISearchDisplayController *searchDisplayController;
 }
+
+@property (strong, nonatomic) UISearchController *searchController;
 
 @end
