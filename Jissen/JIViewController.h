@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  JIViewController.h
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 9/22/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface JIViewController : UIViewController
 
 
 @end

@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6099A7E41BB39E0D00436AA1 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099A7E31BB39E0D00436AA1 /* TableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		6099A7E41BB39E0D00436AA1 /* JITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099A7E31BB39E0D00436AA1 /* JITableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		60CE85C01BB254F70086FB0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85BF1BB254F70086FB0D /* main.m */; };
 		60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C21BB254F70086FB0D /* AppDelegate.m */; };
-		60CE85C61BB254F70086FB0D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C51BB254F70086FB0D /* ViewController.m */; };
+		60CE85C61BB254F70086FB0D /* JIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C51BB254F70086FB0D /* JIViewController.m */; };
 		60CE85CC1BB254F70086FB0D /* Jissen.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */; };
 		60CE85CE1BB254F70086FB0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60CE85CD1BB254F70086FB0D /* Assets.xcassets */; };
 		60CE85DC1BB254F70086FB0D /* JissenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85DB1BB254F70086FB0D /* JissenTests.m */; };
@@ -35,14 +35,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6099A7E21BB39E0D00436AA1 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
-		6099A7E31BB39E0D00436AA1 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		6099A7E21BB39E0D00436AA1 /* JITableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JITableViewController.h; sourceTree = "<group>"; };
+		6099A7E31BB39E0D00436AA1 /* JITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JITableViewController.m; sourceTree = "<group>"; };
 		60CE85BB1BB254F70086FB0D /* Jissen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jissen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60CE85BF1BB254F70086FB0D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		60CE85C11BB254F70086FB0D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		60CE85C21BB254F70086FB0D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		60CE85C41BB254F70086FB0D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		60CE85C51BB254F70086FB0D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		60CE85C41BB254F70086FB0D /* JIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JIViewController.h; sourceTree = "<group>"; };
+		60CE85C51BB254F70086FB0D /* JIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JIViewController.m; sourceTree = "<group>"; };
 		60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Jissen.xcdatamodel; sourceTree = "<group>"; };
 		60CE85CD1BB254F70086FB0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60CE85D21BB254F70086FB0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -104,10 +104,10 @@
 			children = (
 				60CE85C11BB254F70086FB0D /* AppDelegate.h */,
 				60CE85C21BB254F70086FB0D /* AppDelegate.m */,
-				6099A7E21BB39E0D00436AA1 /* TableViewController.h */,
-				6099A7E31BB39E0D00436AA1 /* TableViewController.m */,
-				60CE85C41BB254F70086FB0D /* ViewController.h */,
-				60CE85C51BB254F70086FB0D /* ViewController.m */,
+				6099A7E21BB39E0D00436AA1 /* JITableViewController.h */,
+				6099A7E31BB39E0D00436AA1 /* JITableViewController.m */,
+				60CE85C41BB254F70086FB0D /* JIViewController.h */,
+				60CE85C51BB254F70086FB0D /* JIViewController.m */,
 				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
 				60CE85D21BB254F70086FB0D /* Info.plist */,
 				60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */,
@@ -270,10 +270,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60CE85C61BB254F70086FB0D /* ViewController.m in Sources */,
+				60CE85C61BB254F70086FB0D /* JIViewController.m in Sources */,
 				60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */,
 				60CE85C01BB254F70086FB0D /* main.m in Sources */,
-				6099A7E41BB39E0D00436AA1 /* TableViewController.m in Sources */,
+				6099A7E41BB39E0D00436AA1 /* JITableViewController.m in Sources */,
 				60CE85CC1BB254F70086FB0D /* Jissen.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

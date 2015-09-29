@@ -1,18 +1,18 @@
 //
-//  ViewController.m
+//  JIViewController.m
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 9/22/15.
 //  Copyright © 2015 Satoru Sasozaki. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "JIViewController.h"
 
-@interface ViewController ()
+@interface JIViewController ()
 
 @end
 
-@implementation ViewController
+@implementation JIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

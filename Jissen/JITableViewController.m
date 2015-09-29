@@ -1,29 +1,29 @@
 //
-//  TableViewController.m
+//  JITableViewController.m
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 9/23/15.
 //  Copyright © 2015 Satoru Sasozaki. All rights reserved.
 //
 
-#import "TableViewController.h"
+#import "JITableViewController.h"
 
-@interface TableViewController ()
+@interface JITableViewController ()
 
 @end
 
-@implementation TableViewController
+@implementation JITableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-        NSArray *group1 = [[NSArray alloc] initWithObjects:@"abc", @"def", @"ghi", nil];
-        NSArray *group2 = [[NSArray alloc] initWithObjects:@"jkl", @"mno", @"pqr", nil];
-        NSArray *group3 = [[NSArray alloc] initWithObjects:@"stu", @"vw",@"xyz", nil];
+        NSArray *group1 = @[@"abc", @"def", @"ghi"];
+        NSArray *group2 = @[@"jkl", @"mno", @"pqr"];
+        NSArray *group3 = @[@"stu", @"vw",@"xyz"];
         
-        originalData = [[NSArray alloc] initWithObjects:group1, group2, group3, nil];
-        searchData = [[NSMutableArray alloc] init];
+        self.originalData = [[NSArray alloc] initWithObjects:group1, group2, group3, nil];
+        self.searchData = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -32,7 +32,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.searchBar = searchBar;
+    
     /*the search bar widht must be > 1, the height must be at least 44
      (the real size of the search bar)*/
     
@@ -61,10 +63,10 @@
     
     if (tableView == self.tableView) {
         // the case of tableView (before searching)
-        sections = [originalData count];
+        sections = [self.originalData count];
     }
     if(tableView == self.searchDisplayController.searchResultsTableView){
-        sections = [searchData count];
+        sections = [self.searchData count];
     }
     return sections;
     
@@ -76,10 +78,10 @@
     // Return the number of rows in the section.
     
     if (tableView == self.tableView) {
-        rows = [[originalData objectAtIndex:section] count];
+        rows = [[self.originalData objectAtIndex:section] count];
     }
     if(tableView == self.searchDisplayController.searchResultsTableView){
-        rows = [[searchData objectAtIndex:section] count];
+        rows = [[self.searchData objectAtIndex:section] count];
     }
     
     return rows;
@@ -96,10 +98,10 @@
     
     // Configure the cell...
     if (tableView == self.tableView) {
-        cell.textLabel.text = [[originalData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        cell.textLabel.text = [[self.originalData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     }
-    if(tableView == self.searchDisplayController.searchResultsTableView){
-        cell.textLabel.text = [[searchData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (tableView == self.searchDisplayController.searchResultsTableView){
+        cell.textLabel.text = [[self.searchData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     }
     
     return cell;
@@ -111,11 +113,10 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    [searchData removeAllObjects];
+    [self.searchData removeAllObjects];
     /*before starting the search is necessary to remove all elements from the
      array that will contain found items */
     
-    NSArray *group;
     
     /* in this loop I search through every element (group) (see the code on top) in
      the "originalData" array, if the string match, the element will be added in a
@@ -123,13 +124,12 @@
      added in the "searchData" array. shortly, I recreated the structure of the
      original array "originalData". */
     
-    for(group in originalData) //take the n group (eg. group1, group2, group3)
+    for (NSArray *group in self.originalData) //take the n group (eg. group1, group2, group3)
         //in the original data
     {
         NSMutableArray *newGroup = [[NSMutableArray alloc] init];
-        NSString *element;
         
-        for(element in group) //take the n element in the group
+        for (NSString *element in group) //take the n element in the group
         {                    //(eg. @"Napoli, @"Milan" etc.)
             
             // http://d.hatena.ne.jp/tanaponchikidun/20120814/1344916945
@@ -143,7 +143,7 @@
         }
         
         if ([newGroup count] > 0) {
-            [searchData addObject:newGroup];
+            [self.searchData addObject:newGroup];
         }
         
     }
