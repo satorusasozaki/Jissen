@@ -11,7 +11,7 @@
 @interface JITableViewController : UITableViewController
 
 @property(nonatomic,strong) NSArray *originalData;
-@property(nonatomic,weak) NSMutableArray *searchData;
+@property(nonatomic,strong) NSMutableArray *searchData;
 @property(nonatomic,weak)UISearchBar *searchBar;
 
 
