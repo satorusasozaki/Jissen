@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JITableViewController : UITableViewController
+@interface JITableViewController : UITableViewController <UISearchBarDelegate, UISearchResultsUpdating>
 
 @property(nonatomic,strong) NSArray *originalData;
 @property(nonatomic,strong) NSMutableArray *searchData;
