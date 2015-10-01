@@ -7,45 +7,102 @@
 //
 
 #import "JITableViewController.h"
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
+
+typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
+{
+    UYLTwitterSearchStateLoading,
+    UYLTwitterSearchStateNotFound,
+    UYLTwitterSearchStateRefused,
+    UYLTwitterSearchStateFailed
+};
 
 @interface JITableViewController ()
+
+@property (nonatomic,strong) NSURLConnection *connection;
+@property (nonatomic,strong) NSMutableData *buffer;
+@property (nonatomic,strong) NSMutableArray *results;
+@property (nonatomic,strong) ACAccountStore *accountStore;
+@property (nonatomic,assign) UYLTwitterSearchState searchState;
+@property (nonatomic,weak) NSString *query;
+
+@property(nonatomic,weak)UISearchBar *searchBar;
+
+@property (nonatomic,strong) UITableView *tableView;
+@property (strong, nonatomic) UISearchController *searchController;
+
+
+@property(nonatomic) BOOL showsSearchResultsButton;
+
 
 @end
 
 @implementation JITableViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+
+- (ACAccountStore *)accountStore
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        NSArray *group1 = @[@"abc", @"def", @"ghi"];
-        NSArray *group2 = @[@"jkl", @"mno", @"pqr"];
-        NSArray *group3 = @[@"stu", @"vw",@"xyz"];
-        
-        self.originalData = [[NSArray alloc] initWithObjects:group1, group2, group3, nil];
-        self.searchData = [[NSMutableArray alloc] init];
+    if (_accountStore == nil)
+    {
+        _accountStore = [[ACAccountStore alloc] init];
     }
-    return self;
+    return _accountStore;
 }
 
+- (NSString *)searchMessageForState:(UYLTwitterSearchState)state
+{
+    switch (state)
+    {
+        case UYLTwitterSearchStateLoading:
+            return @"Loading...";
+            break;
+        case UYLTwitterSearchStateNotFound:
+            return @"No results found";
+            break;
+        case UYLTwitterSearchStateRefused:
+            return @"Twitter Access Refused";
+            break;
+        default:
+            return @"Not Available";
+            break;
+    }
+}
+/*
+- (IBAction)refreshSearchResults
+{
+    [self cancelConnection];
+    [self loadQuery];
+}
+*/
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UITableView *tableView = [UITableView new];
+    self.tableView = tableView;
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ResultCell"];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoadingCell"];
+
+    
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     self.searchBar = searchBar;
-    
     /*the search bar widht must be > 1, the height must be at least 44
      (the real size of the search bar)*/
-    
+
+    NSMutableArray *results = [NSMutableArray new];
+    self.results = results;
+
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchResultsUpdater = self;
+//    self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.showsSearchResultsButton = YES;
 
     self.searchController.searchBar.delegate = self;
     
     self.tableView.tableHeaderView = self.searchController.searchBar;    //on the top of tableView.
     self.definesPresentationContext = YES;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,143 +114,190 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSUInteger sections = 0;
-    // Return the number of sections.
-    
-    if (tableView == self.tableView) {
-        // the case of tableView (before searching)
-        sections = [self.originalData count];
-    }
-    if(tableView == self.searchDisplayController.searchResultsTableView){
-        sections = [self.searchData count];
-    }
-    return sections;
-    
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSUInteger rows = 0;
-    // Return the number of rows in the section.
-    
-    if (tableView == self.tableView) {
-        rows = [[self.originalData objectAtIndex:section] count];
-    }
-    if(tableView == self.searchDisplayController.searchResultsTableView){
-        rows = [[self.searchData objectAtIndex:section] count];
-    }
-    
-    return rows;
+    NSInteger count = [self.results count];
+    return count > 0 ? count : 1;
+
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *ResultCellIdentifier = @"ResultCell";
+    static NSString *LoadCellIdentifier = @"LoadingCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] ;
+    NSUInteger count = [self.results count];
+    if ((count == 0) && (indexPath.row == 0))
+    {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
+        cell.textLabel.text = [self searchMessageForState:self.searchState];
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        return cell;
     }
     
-    // Configure the cell...
-    if (tableView == self.tableView) {
-        cell.textLabel.text = [[self.originalData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    }
-    if (tableView == self.searchDisplayController.searchResultsTableView){
-        cell.textLabel.text = [[self.searchData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    }
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
+    NSDictionary *tweet = (self.results)[indexPath.row];
+    cell.textLabel.text = tweet[@"text"];
     return cell;
 }
 
+ 
 /*
  This method is called every time you insert a new character in the searchBar, you will take the searchString, perform the search through the table elements and return YES.
  */
+/*
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    [self.searchData removeAllObjects];
-    /*before starting the search is necessary to remove all elements from the
-     array that will contain found items */
     
+    // Set searchString equal to what's typed into the searchbar
+    NSString *query;
+    self.query = query;
+    self.query = self.searchController.searchBar.text;
+
+}
+ */
+
+
+
+
+
+
+#pragma mark - Private methods
+
+
+
+
+#define RESULTS_PERPAGE @"100"
+
+- (void)loadQuery
+{
+    self.searchState = UYLTwitterSearchStateLoading;
+    NSString *encodedQuery = [self.query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    /* in this loop I search through every element (group) (see the code on top) in
-     the "originalData" array, if the string match, the element will be added in a
-     new array called newGroup. Then, if newGroup has 1 or more elements, it will be
-     added in the "searchData" array. shortly, I recreated the structure of the
-     original array "originalData". */
+    ACAccountType *accountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    [self.accountStore requestAccessToAccountsWithType:accountType
+                                               options:NULL
+                                            completion:^(BOOL granted, NSError *error)
+     {
+         if (granted)
+         {
+  
+             NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
+             NSDictionary *parameters = @{@"count" : RESULTS_PERPAGE,
+                                          @"q" : encodedQuery};
+             
+             SLRequest *slRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                       requestMethod:SLRequestMethodGET
+                                                                 URL:url
+                                                          parameters:parameters];
+             
+             NSArray *accounts = [self.accountStore accountsWithAccountType:accountType];
+             slRequest.account = [accounts lastObject];
+             NSURLRequest *request = [slRequest preparedURLRequest];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+             });
+         }
+         else
+         {
+             self.searchState = UYLTwitterSearchStateRefused;
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self.tableView reloadData];
+             });
+         }
+     }];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    self.buffer = [NSMutableData data];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     
-    for (NSArray *group in self.originalData) //take the n group (eg. group1, group2, group3)
-        //in the original data
+    [self.buffer appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    self.connection = nil;
+    
+    NSError *jsonParsingError = nil;
+    NSDictionary *jsonResults = [NSJSONSerialization JSONObjectWithData:self.buffer options:0 error:&jsonParsingError];
+    
+    self.results = jsonResults[@"statuses"];
+    if ([self.results count] == 0)
     {
-        NSMutableArray *newGroup = [[NSMutableArray alloc] init];
-        
-        for (NSString *element in group) //take the n element in the group
-        {                    //(eg. @"Napoli, @"Milan" etc.)
-            
-            // http://d.hatena.ne.jp/tanaponchikidun/20120814/1344916945
-            // NSRangeはlocation（位置）とlength（長さ）の2つを持つ、"範囲"を表す構造体です。
-            NSRange range = [element rangeOfString:searchString
-                                           options:NSCaseInsensitiveSearch];
-            
-            if (range.length > 0) { //if the substring match
-                [newGroup addObject:element]; //add the element to group
-            }
+        NSArray *errors = jsonResults[@"errors"];
+        if ([errors count])
+        {
+            self.searchState = UYLTwitterSearchStateFailed;
         }
-        
-        if ([newGroup count] > 0) {
-            [self.searchData addObject:newGroup];
+        else
+        {
+            self.searchState = UYLTwitterSearchStateNotFound;
         }
-        
     }
     
-    return YES;
+    self.buffer = nil;
+    [self.refreshControl endRefreshing];
+    [self.tableView reloadData];
+    [self.tableView flashScrollIndicators];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    self.connection = nil;
+    self.buffer = nil;
+    [self.refreshControl endRefreshing];
+    self.searchState = UYLTwitterSearchStateFailed;
+    
+    [self handleError:error];
+    [self.tableView reloadData];
+}
+
+- (void)handleError:(NSError *)error
+{
+    NSString *errorMessage = [error localizedDescription];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Connection Error"
+                                                        message:errorMessage
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+    [alertView show];
+}
+
+- (void)cancelConnection
+{
+    if (self.connection != nil)
+    {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [self.connection cancel];
+        self.connection = nil;
+        self.buffer = nil;
+    }
+}
+
+
+- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
+    
+    NSString *query;
+    self.query = query;
+    self.query = self.searchController.searchBar.text;
+    [self loadQuery];
+    [self cancelConnection];
+    
 }
 
 
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end
