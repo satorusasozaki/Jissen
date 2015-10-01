@@ -33,7 +33,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 @property (strong, nonatomic) UISearchController *searchController;
 
 
-@property(nonatomic) BOOL showsSearchResultsButton;
 
 
 @end
@@ -84,24 +83,19 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ResultCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoadingCell"];
 
-    
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 10)];
     self.searchBar = searchBar;
-    /*the search bar widht must be > 1, the height must be at least 44
-     (the real size of the search bar)*/
 
     NSMutableArray *results = [NSMutableArray new];
     self.results = results;
-
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-//    self.searchController.searchResultsUpdater = self;
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.searchBar.showsSearchResultsButton = YES;
-
     self.searchController.searchBar.delegate = self;
     
-    self.tableView.tableHeaderView = self.searchController.searchBar;    //on the top of tableView.
-    self.definesPresentationContext = YES;
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+
+
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     
 }
 
@@ -286,7 +280,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     }
 }
 
-
+/*
 - (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
     
     NSString *query;
@@ -299,5 +293,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 
 
 
+*/
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    NSString *query;
+    self.query = query;
+    self.query = self.searchController.searchBar.text;
+    [self loadQuery];
+    [self cancelConnection];
+}
 
 @end
