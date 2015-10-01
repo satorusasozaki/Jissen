@@ -10,6 +10,6 @@
 
 @interface JITableViewController : UITableViewController <UISearchBarDelegate>
 
-
+@property (nonatomic,strong) UINavigationController *nvController;
 
 @end

@@ -86,16 +86,30 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 10)];
     self.searchBar = searchBar;
-
     NSMutableArray *results = [NSMutableArray new];
     self.results = results;
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchBar.delegate = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+
     
     self.tableView.tableHeaderView = self.searchController.searchBar;
 
 
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    [self.tableView setContentInset:UIEdgeInsetsMake(20,
+                                                     self.tableView.contentInset.left,
+                                                     self.tableView.contentInset.bottom,
+                                                     self.tableView.contentInset.right)];
+    
+    
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
+//    [self.tableView addSubview:refreshControl];
+  self.refreshControl = refreshControl;
+    
     
 }
 
@@ -303,4 +317,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     [self cancelConnection];
 }
 
+- (void)handleRefresh:(id)sender
+{
+    [self loadQuery];
+    [self cancelConnection];
+}
 @end
