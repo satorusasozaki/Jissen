@@ -172,7 +172,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 
 
 
-#define RESULTS_PERPAGE @"100"
+#define RESULTS_PERPAGE @"20"
 
 - (void)loadQuery
 {
