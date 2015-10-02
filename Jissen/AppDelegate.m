@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "JITableViewController.h"
+#import "JINavigationController.h"
 
 @interface AppDelegate ()
 
@@ -21,7 +22,11 @@
     JITableViewController *tableViewController = [JITableViewController new];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = tableViewController;
+    JINavigationController *nvController = [[JINavigationController alloc] initWithRootViewController:tableViewController];
+/*
+    [self.window addSubview:nvController.view];
+  */
+    self.window.rootViewController = nvController;
     [self.window makeKeyAndVisible];
     return YES;
 }

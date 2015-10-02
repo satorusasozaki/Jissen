@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JITableViewController : UITableViewController <UISearchBarDelegate>
+@interface JITableViewController : UITableViewController <UISearchBarDelegate,UITableViewDelegate>
 
 @property (nonatomic,strong) UINavigationController *nvController;
 

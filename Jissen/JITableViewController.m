@@ -9,10 +9,12 @@
 #import "JITableViewController.h"
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
+#import "JIDetailViewController.h"
+#import "JITableViewCell.h"
 
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 {
-    UYLTwitterSearchStateLoading,
+    UYLTwitterSearchStateLoading = 0,
     UYLTwitterSearchStateNotFound,
     UYLTwitterSearchStateRefused,
     UYLTwitterSearchStateFailed
@@ -33,6 +35,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 @property (strong, nonatomic) UISearchController *searchController;
 
 
+@property (nonatomic,weak) JITableViewCell *cell;
+
+@property (nonatomic,strong) NSString *tweet;
 
 
 @end
@@ -82,7 +87,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     self.tableView = tableView;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ResultCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoadingCell"];
-
+    self.tableView.delegate = self;
 
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 10)];
     self.searchBar = searchBar;
@@ -95,7 +100,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     
     self.tableView.tableHeaderView = self.searchController.searchBar;
 
-
+    // does not work
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     [self.tableView setContentInset:UIEdgeInsetsMake(20,
@@ -103,6 +108,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
                                                      self.tableView.contentInset.bottom,
                                                      self.tableView.contentInset.right)];
     
+    
+
     
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -118,7 +125,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark - <Table view data source>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -132,7 +139,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *ResultCellIdentifier = @"ResultCell";
@@ -141,45 +147,37 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     NSUInteger count = [self.results count];
     if ((count == 0) && (indexPath.row == 0))
     {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
+        JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
+        self.cell = cell;
         cell.textLabel.text = [self searchMessageForState:self.searchState];
         cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         return cell;
     }
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
-    NSDictionary *tweet = (self.results)[indexPath.row];
-    cell.textLabel.text = tweet[@"text"];
+    JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
+    self.cell = cell;
+    NSDictionary *tweetDic = (self.results)[indexPath.row];
+    NSString *tweet = tweetDic[@"text"];
+
+    cell.textLabel.text = (tweet.length > 5 ? [tweet substringToIndex:5] : tweet);
     return cell;
 }
-
- 
-/*
- This method is called every time you insert a new character in the searchBar, you will take the searchString, perform the search through the table elements and return YES.
- */
-/*
-
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    JIDetailViewController *detailViewController = [JIDetailViewController new];
+    detailViewController.title = @"Detail";
     
-    // Set searchString equal to what's typed into the searchbar
-    NSString *query;
-    self.query = query;
-    self.query = self.searchController.searchBar.text;
-
+//  Is it nessesary to be NSDictionary here?
+    NSDictionary *tweetDic = (self.results)[indexPath.row];
+    NSString *tweetText = tweetDic[@"text"];
+//    Isn't this code possible?
+//    NSString *tweetText = self.results[indexPath.row];
+    self.tweet = tweetText;
+    detailViewController.tweet = self.tweet;
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
- */
 
-
-
-
-
-
-#pragma mark - Private methods
-
-
-
-
+#pragma mark - API call
 #define RESULTS_PERPAGE @"20"
 
 - (void)loadQuery
@@ -221,6 +219,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
          }
      }];
 }
+
+#pragma mark - Connection Control
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -294,21 +294,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     }
 }
 
-/*
-- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
-    
-    NSString *query;
-    self.query = query;
-    self.query = self.searchController.searchBar.text;
-    [self loadQuery];
-    [self cancelConnection];
-    
-}
-
-
-
-*/
-
+#pragma mark - Search Bar Control
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     NSString *query;
     self.query = query;
@@ -316,6 +302,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     [self loadQuery];
     [self cancelConnection];
 }
+
+#pragma mark - Refresh Control
 
 - (void)handleRefresh:(id)sender
 {

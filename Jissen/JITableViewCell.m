@@ -1,14 +1,14 @@
 //
-//  JICellTableViewCell.m
+//  JITableViewCell.m
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 9/30/15.
 //  Copyright © 2015 Satoru Sasozaki. All rights reserved.
 //
 
-#import "JICellTableViewCell.h"
+#import "JITableViewCell.h"
 
-@implementation JICellTableViewCell
+@implementation JITableViewCell
 
 - (void)awakeFromNib {
     // Initialization code
