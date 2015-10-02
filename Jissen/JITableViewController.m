@@ -159,7 +159,15 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     NSDictionary *tweetDic = (self.results)[indexPath.row];
     NSString *tweet = tweetDic[@"text"];
 
-    cell.textLabel.text = (tweet.length > 5 ? [tweet substringToIndex:5] : tweet);
+    NSString *dots = @"...";
+    if (tweet.length > 5) {
+        NSString *limitedTweet = [tweet substringToIndex:5];
+        NSString *combinedTweet = [NSString stringWithFormat:@"%@%@", limitedTweet, dots];
+        cell.textLabel.text = combinedTweet;
+    } else {
+        cell.textLabel.text = tweet;
+    }
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
