@@ -28,11 +28,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 @property (nonatomic,strong) ACAccountStore *accountStore;
 @property (nonatomic,assign) UYLTwitterSearchState searchState;
 @property (nonatomic,weak) NSString *query;
-
-@property(nonatomic,weak)UISearchBar *searchBar;
+@property (nonatomic,weak) UISearchBar *searchBar;
 
 @property (nonatomic,strong) UITableView *tableView;
-@property (strong, nonatomic) UISearchController *searchController;
 
 
 @property (nonatomic,weak) JITableViewCell *cell;
@@ -72,45 +70,29 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
             break;
     }
 }
-/*
-- (IBAction)refreshSearchResults
-{
-    [self cancelConnection];
-    [self loadQuery];
-}
-*/
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UITableView *tableView = [UITableView new];
-    self.tableView = tableView;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ResultCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoadingCell"];
     self.tableView.delegate = self;
 
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 10)];
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 50)];
+   // UISearchBar *searchBar = [[UISearchBar alloc]init];
     self.searchBar = searchBar;
     NSMutableArray *results = [NSMutableArray new];
     self.results = results;
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchBar.delegate = self;
-    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchBar.delegate = self;
+    [self.tableView.tableHeaderView addSubview:self.searchBar];
+    
+    self.tableView.tableHeaderView = self.searchBar;
 
     
-    self.tableView.tableHeaderView = self.searchController.searchBar;
-
-    // does not work
+    [self.navigationController.view addSubview:self.tableView];
+    self.title = @"Search";
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    
-    [self.tableView setContentInset:UIEdgeInsetsMake(20,
-                                                     self.tableView.contentInset.left,
-                                                     self.tableView.contentInset.bottom,
-                                                     self.tableView.contentInset.right)];
-    
-    
-
-    
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
@@ -184,6 +166,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     detailViewController.tweet = self.tweet;
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
+
+#pragma mark - Infinity Scroll
+
+
+
 
 #pragma mark - API call
 #define RESULTS_PERPAGE @"20"
@@ -303,13 +290,29 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 }
 
 #pragma mark - Search Bar Control
+/*
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = YES;
+}
+*/
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+}
+
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = NO;
+
+
     NSString *query;
     self.query = query;
-    self.query = self.searchController.searchBar.text;
+    self.query = self.searchBar.text;
     [self loadQuery];
     [self cancelConnection];
 }
+
+
+
+
 
 #pragma mark - Refresh Control
 
