@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 @property (nonatomic,strong) NSMutableArray *results;
 @property (nonatomic,strong) ACAccountStore *accountStore;
 @property (nonatomic,assign) UYLTwitterSearchState searchState;
-@property (nonatomic,weak) NSString *query;
+@property (nonatomic,strong) NSString *query;
 @property (nonatomic,weak) UISearchBar *searchBar;
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -126,13 +126,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     static NSString *ResultCellIdentifier = @"ResultCell";
     static NSString *LoadCellIdentifier = @"LoadingCell";
     
+    
     NSUInteger count = [self.results count];
     if ((count == 0) && (indexPath.row == 0))
     {
         JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
         self.cell = cell;
         cell.textLabel.text = [self searchMessageForState:self.searchState];
-        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+       // cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         return cell;
     }
     
@@ -156,7 +157,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     JIDetailViewController *detailViewController = [JIDetailViewController new];
     detailViewController.title = @"Detail";
-    
+    if(self.cell.reuseIdentifier == @"ResultCell") {
 //  Is it nessesary to be NSDictionary here?
     NSDictionary *tweetDic = (self.results)[indexPath.row];
     NSString *tweetText = tweetDic[@"text"];
@@ -165,6 +166,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     self.tweet = tweetText;
     detailViewController.tweet = self.tweet;
     [self.navigationController pushViewController:detailViewController animated:YES];
+    }
 }
 
 #pragma mark - Infinity Scroll
@@ -290,21 +292,17 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
 }
 
 #pragma mark - Search Bar Control
-/*
+    
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     self.searchBar.showsCancelButton = YES;
 }
-*/
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     self.searchBar.showsCancelButton = NO;
-
-
-    NSString *query;
-    self.query = query;
     self.query = self.searchBar.text;
     [self loadQuery];
     [self cancelConnection];
@@ -321,4 +319,10 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState)
     [self loadQuery];
     [self cancelConnection];
 }
+
+
+#pragma mark - Scroll 
+
+
+
 @end
