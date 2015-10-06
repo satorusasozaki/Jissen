@@ -13,7 +13,7 @@
 #import "JITableViewCell.h"
 #import "JIModel.h"
 
-
+// For connection statuts
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     UYLTwitterSearchStateLoading = 0,
     UYLTwitterSearchStateNotFound,
@@ -23,17 +23,25 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 @interface JITableViewController ()
 
+// Properties used for API connection
 @property (nonatomic,strong) NSURLConnection *connection;
 @property (nonatomic,strong) NSMutableData *buffer;
 @property (nonatomic,strong) NSMutableArray *results;
 @property (nonatomic,strong) ACAccountStore *accountStore;
 @property (nonatomic,assign) UYLTwitterSearchState searchState;
 @property (nonatomic,strong) NSString *query;
+
+// UI components
 @property (nonatomic,weak) UISearchBar *searchBar;
 @property (nonatomic,weak) JITableViewCell *cell;
-@property (nonatomic,strong) NSString *tweet;
+
+// The ID of last tweet from one API call
+// This ID will be the first ID of tweet in the next API call
+// Used to decide where to start for next API call
 @property (nonatomic,strong) NSString *max_id;
 
+// Used to know when API call is finished
+// To load next set of tweets
 @property (nonatomic,strong) JIModel *flagModel;
 @end
 
@@ -74,20 +82,23 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 50)];
     self.searchBar = searchBar;
-    self.results = [[NSMutableArray alloc] init];
+    
+    // Do not use alloc and init
+    self.results = [NSMutableArray array];
     self.searchBar.delegate = self;
     [self.tableView.tableHeaderView addSubview:self.searchBar];
     
     self.tableView.tableHeaderView = self.searchBar;
 
-    [self.navigationController.view addSubview:self.tableView];
+    // Set title in each elements of the navigation controller
     self.title = @"Search";
-    self.edgesForExtendedLayout = UIRectEdgeNone;
     
+    //
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
 
+    // Do not forget to instanciate any object properties
     self.flagModel = [[JIModel alloc] init];
 }
 
@@ -99,59 +110,82 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger count = [self.results count];
+    // Avoid to crash when self.results is empty
     return count > 0 ? count : 1;
 
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // static is used so that both idenrifiers do not have to be assigned again after they got assigned
+    // Write "registerClass" in viewDidLoad or
+    // Write if statement to initialize cell when it is nil
+    // "registerClass" is preferred
     static NSString *ResultCellIdentifier = @"ResultCell";
     static NSString *LoadCellIdentifier = @"LoadingCell";
     
+    // Needed to return plain cell just after viewDidLoad, because self.results is empty and cannot return anything since API call has not happen yet
+    // Since self.result is 0, numberOfRowsInsection returns just 1 and one cell will be displayed
     NSUInteger count = [self.results count];
-    if ((count == 0) && (indexPath.row == 0))
-    {
+    if ((count == 0) && (indexPath.row == 0)) {
         JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
         self.cell = cell;
-        cell.textLabel.text = [self searchMessageForState:self.searchState];
         return cell;
     }
     
+    // Executed after self.results obtained its contents
     JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
     self.cell = cell;
+    
+    // Pick up the one JSON data set on "indexPath.row"th from self.results
+    // How can you know the
+    
+    // Pick up one tweet from self.results in which whole JSON data is stored
+    // NSDictionary object can contain some lines holding keys and values
     NSDictionary *tweetDic = (self.results)[indexPath.row];
+    
+    // Pick up the value whose key is "text" from the lines
     NSString *tweet = tweetDic[@"text"];
 
-    NSString *dots = @"...";
+    // Display tweet texts with specified length
     if (tweet.length > 10) {
         NSString *limitedTweet = [tweet substringToIndex:10];
-        NSString *combinedTweet = [NSString stringWithFormat:@"%@%@", limitedTweet, dots];
+        NSString *combinedTweet = [NSString stringWithFormat:@"%@%@", limitedTweet, @"..."];
         cell.textLabel.text = combinedTweet;
     } else {
         cell.textLabel.text = tweet;
     }
     
+    // indexPath.row always starts with 0, although the size of the array obtained from count method is counted from 1
+    // Thus, -1 needed
     if (indexPath.row == [self.results count] - 1) {
-        self.max_id = tweetDic[@"id"];
+        // self.max_id will unexpectedly be nill, when @"id" used
+        self.max_id = tweetDic[@"id_str"];
     }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    JIDetailViewController *detailViewController = [JIDetailViewController new];
+    JIDetailViewController *detailViewController = [[JIDetailViewController alloc] init];
     detailViewController.title = @"Detail";
+
+    // Avoid to go to detailView when the dummy cell which is created before API call tapped
     if([self.cell.reuseIdentifier isEqual:@"ResultCell"]) {
-    NSDictionary *tweetDic = (self.results)[indexPath.row];
-    NSString *tweetText = tweetDic[@"text"];
-    self.tweet = tweetText;
-    detailViewController.tweet = self.tweet;
-    [self.navigationController pushViewController:detailViewController animated:YES];
+        
+        // Create NSDictionary object so that you can specifiy the key to pick a value
+        NSDictionary *tweetDic = (self.results)[indexPath.row];
+        NSString *tweetText = tweetDic[@"text"];
+        
+        // Assign whole tweet text to tweet property in detailViewController
+        detailViewController.tweet = tweetText;
+        [self.navigationController pushViewController:detailViewController animated:YES];
     }
 }
 
 
 #pragma mark - API call
-#define RESULTS_PERPAGE @"20"
+#define RESULTS_PERPAGE @"5"
 
 - (void)loadQuery
 {
