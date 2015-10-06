@@ -13,6 +13,7 @@
 #import "JITableViewCell.h"
 #import "JIModel.h"
 
+
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     UYLTwitterSearchStateLoading = 0,
     UYLTwitterSearchStateNotFound,
@@ -33,16 +34,10 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 @property (nonatomic,strong) NSString *tweet;
 @property (nonatomic,strong) NSString *max_id;
 
-@property NSUInteger connection_counter;
-
 @property (nonatomic,strong) JIModel *flagModel;
-
-
-
 @end
 
 @implementation JITableViewController
-
 
 - (ACAccountStore *)accountStore {
     if (_accountStore == nil)
@@ -70,7 +65,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     }
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -86,7 +80,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     
     self.tableView.tableHeaderView = self.searchBar;
 
-    
     [self.navigationController.view addSubview:self.tableView];
     self.title = @"Search";
     self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -96,15 +89,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.refreshControl = refreshControl;
 
     self.flagModel = [[JIModel alloc] init];
-    //self.flagModel.isFinished = NO;
-    
-    self.connection_counter = 0;
-    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - <Table view data source>
@@ -132,7 +116,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         return cell;
     }
     
-    
     JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
     self.cell = cell;
     NSDictionary *tweetDic = (self.results)[indexPath.row];
@@ -148,10 +131,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     }
     
     if (indexPath.row == [self.results count] - 1) {
-//        self.max_id = [NSString stringWithString:tweetDic[@"id"]];
         self.max_id = tweetDic[@"id"];
     }
-    
     return cell;
 }
 
@@ -160,11 +141,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     JIDetailViewController *detailViewController = [JIDetailViewController new];
     detailViewController.title = @"Detail";
     if([self.cell.reuseIdentifier isEqual:@"ResultCell"]) {
-//  Is it nessesary to be NSDictionary here?
     NSDictionary *tweetDic = (self.results)[indexPath.row];
     NSString *tweetText = tweetDic[@"text"];
-//    Isn't this code possible?
-//    NSString *tweetText = self.results[indexPath.row];
     self.tweet = tweetText;
     detailViewController.tweet = self.tweet;
     [self.navigationController pushViewController:detailViewController animated:YES];
@@ -180,9 +158,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.flagModel.isFinished = NO;
     self.searchState = UYLTwitterSearchStateLoading;
     NSString *encodedQuery = [self.query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
     ACAccountType *accountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    
     [self.accountStore requestAccessToAccountsWithType:accountType
                                                options:NULL
                                             completion:^(BOOL granted, NSError *error)
@@ -243,29 +219,15 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [self.buffer appendData:data];
 }
 
-
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     self.connection = nil;
-    
     NSError *jsonParsingError = nil;
     NSDictionary *jsonResults = [NSJSONSerialization JSONObjectWithData:self.buffer options:0 error:&jsonParsingError];
-    
-
-//    if (self.connection_counter > 0) {
-//        [jsonResults[@"statuses"] removeObjectAtIndex:0];
-//    }
-    
-    // try to remove the repeated tweet
-   // NSMutableArray *bufferResults = @[];
-    
     NSMutableArray *bufferResults = [jsonResults[@"statuses"] mutableCopy];
-    
-   // [bufferResults addObjectsFromArray:jsonResults[@"statuses"]];
     [bufferResults removeObjectAtIndex:0];
     
     [self.results addObjectsFromArray:bufferResults];
-    
     
     if ([self.results count] == 0)
     {
@@ -286,8 +248,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [self.tableView flashScrollIndicators];
     
     self.flagModel.isFinished = YES;
-    self.connection_counter++;
-
 }
 
 
@@ -339,15 +299,12 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [self cancelConnection];
 }
 
-
-
 #pragma mark - Refresh Control
 
 - (void)handleRefresh:(id)sender {
     [self loadQuery];
     [self cancelConnection];
 }
-
 
 #pragma mark - Scroll
 // http://nonbiri-tereka.hatenablog.com/entry/2014/03/02/092414
@@ -357,9 +314,5 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         [self.tableView reloadData];
     }
 }
-
-
-
-
 
 @end
