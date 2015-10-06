@@ -11,6 +11,7 @@
 #import <Social/Social.h>
 #import "JIDetailViewController.h"
 #import "JITableViewCell.h"
+#import "JIModel.h"
 
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     UYLTwitterSearchStateLoading = 0,
@@ -28,12 +29,15 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 @property (nonatomic,assign) UYLTwitterSearchState searchState;
 @property (nonatomic,strong) NSString *query;
 @property (nonatomic,weak) UISearchBar *searchBar;
-
-
-
 @property (nonatomic,weak) JITableViewCell *cell;
-
 @property (nonatomic,strong) NSString *tweet;
+@property (nonatomic,strong) NSString *max_id;
+
+@property NSUInteger api_call_counter;
+@property NSUInteger scrollMethod_counter;
+
+@property (nonatomic,strong) JIModel *flagModel;
+
 
 
 @end
@@ -91,6 +95,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
+    
+    
+    self.api_call_counter = 0;
+    self.scrollMethod_counter = 1;
+    
+    self.flagModel = [[JIModel alloc] init];
+    //self.flagModel.isFinished = NO;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -130,12 +142,25 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     NSString *tweet = tweetDic[@"text"];
 
     NSString *dots = @"...";
-    if (tweet.length > 5) {
-        NSString *limitedTweet = [tweet substringToIndex:5];
+    if (tweet.length > 10) {
+        NSString *limitedTweet = [tweet substringToIndex:10];
         NSString *combinedTweet = [NSString stringWithFormat:@"%@%@", limitedTweet, dots];
         cell.textLabel.text = combinedTweet;
     } else {
         cell.textLabel.text = tweet;
+    }
+    NSLog(@"%d",indexPath.row);
+    
+    if (indexPath.row == [self.results count] - 1) {
+        //NSInteger
+       // NSInteger lastID = tweetDic[@"id"];
+        //lastID -= 1;
+        
+        
+        
+        
+        self.max_id = [[NSString alloc] initWithString:tweetDic[@"id_str"]];
+        
     }
     
     return cell;
@@ -157,42 +182,57 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     }
 }
 
-#pragma mark - Infinity Scroll
-
-
-
 
 #pragma mark - API call
-#define RESULTS_PERPAGE @"20"
+#define RESULTS_PERPAGE @"3"
 
 - (void)loadQuery
 {
+    self.flagModel.isFinished = NO;
     self.searchState = UYLTwitterSearchStateLoading;
     NSString *encodedQuery = [self.query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     ACAccountType *accountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
     [self.accountStore requestAccessToAccountsWithType:accountType
                                                options:NULL
                                             completion:^(BOOL granted, NSError *error)
      {
          if (granted)
          {
-  
-             NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
-             NSDictionary *parameters = @{@"count" : RESULTS_PERPAGE, @"q" : encodedQuery};
-             
-             SLRequest *slRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                                       requestMethod:SLRequestMethodGET
-                                                                 URL:url
-                                                          parameters:parameters];
-             
-             NSArray *accounts = [self.accountStore accountsWithAccountType:accountType];
-             slRequest.account = [accounts lastObject];
-             NSURLRequest *request = [slRequest preparedURLRequest];
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-             });
+             if (self.max_id == nil) {
+                 NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
+                 NSDictionary *parameters = @{@"count" : RESULTS_PERPAGE, @"q" : encodedQuery};
+        
+                 SLRequest *slRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                           requestMethod:SLRequestMethodGET
+                                                                     URL:url
+                                                              parameters:parameters];
+                 
+                 NSArray *accounts = [self.accountStore accountsWithAccountType:accountType];
+                 slRequest.account = [accounts lastObject];
+                 NSURLRequest *request = [slRequest preparedURLRequest];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+                     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                 });
+             } else {
+                 NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
+                 NSDictionary *parameters = @{@"count" : RESULTS_PERPAGE, @"q" : encodedQuery, @"max_id" : self.max_id};
+                 
+                 SLRequest *slRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                           requestMethod:SLRequestMethodGET
+                                                                     URL:url
+                                                              parameters:parameters];
+                 
+                 NSArray *accounts = [self.accountStore accountsWithAccountType:accountType];
+                 slRequest.account = [accounts lastObject];
+                 NSURLRequest *request = [slRequest preparedURLRequest];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+                     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                 });
+             }
          }
          else
          {
@@ -202,6 +242,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
              });
          }
      }];
+    
+    self.api_call_counter++;
 }
 
 #pragma mark - Connection Control
@@ -225,6 +267,12 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 //    //    self.results = jsonResults[@"statuses"];
     [self.results addObjectsFromArray:jsonResults[@"statuses"]];
 //    上記のコードが何回も呼ばれてる模様 -> scroll methodをコメントアウトしてなかったから
+//    NSString *since_id = [[jsonResults objectForKey:@"search_metadata"] objectForKey:@"since_id"];
+
+//  Keeps returning 0
+//    self.max_id = jsonResults[@"search_metadata"][@"max_id"];
+
+    
     
 // arrayのarrayを作るのはどう？
     
@@ -246,6 +294,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
     [self.tableView flashScrollIndicators];
+    
+    self.flagModel.isFinished = YES;
+
 }
 
 
@@ -299,8 +350,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 
 
-
-
 #pragma mark - Refresh Control
 
 - (void)handleRefresh:(id)sender {
@@ -310,17 +359,32 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 
 #pragma mark - Scroll 
-// http://stackoverflow.com/questions/10404116/uitableview-infinite-scrolling/31454471#31454471
+//// http://stackoverflow.com/questions/10404116/uitableview-infinite-scrolling/31454471#31454471
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    CGFloat actualPosition = scrollView.contentOffset.y;
+//    // contentSize.height(実際のサイズ)より少し減らしておくことで、そこに到達した時点で（実際のcontentSize.heightに到達する前に）限界を上げてくれる
+//    CGFloat contentHeight = scrollView.contentSize.height - 500;
+//    if (actualPosition >= contentHeight) {
+//        
+//        [self loadQuery];
+//        [self.tableView reloadData];
+//    }
+//}
+
+// http://nonbiri-tereka.hatenablog.com/entry/2014/03/02/092414
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat actualPosition = scrollView.contentOffset.y;
-    // contentSize.height(実際のサイズ)より少し減らしておくことで、そこに到達した時点で（実際のcontentSize.heightに到達する前に）限界を上げてくれる
-    CGFloat contentHeight = scrollView.contentSize.height - 1000;
-    if (actualPosition >= contentHeight) {
-        
+    if([self.flagModel shouldLoadNext:self.tableView]){
         [self loadQuery];
         [self.tableView reloadData];
+       // self.scrollMethod_counter++;
     }
 }
+
+
+
+
+
+
 
 // 上のメソッドだとスクロールするたびに呼ばれてる模様
 // resultsに入ってる一番下のセルが下に当たったらロードされるようにする
