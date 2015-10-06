@@ -33,8 +33,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 @property (nonatomic,strong) NSString *tweet;
 @property (nonatomic,strong) NSString *max_id;
 
-@property NSUInteger api_call_counter;
-@property NSUInteger scrollMethod_counter;
+@property NSUInteger connection_counter;
 
 @property (nonatomic,strong) JIModel *flagModel;
 
@@ -95,13 +94,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
-    
-    
-    self.api_call_counter = 0;
-    self.scrollMethod_counter = 1;
-    
+
     self.flagModel = [[JIModel alloc] init];
     //self.flagModel.isFinished = NO;
+    
+    self.connection_counter = 0;
     
 }
 
@@ -136,6 +133,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         return cell;
     }
     
+    
     JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
     self.cell = cell;
     NSDictionary *tweetDic = (self.results)[indexPath.row];
@@ -149,18 +147,12 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     } else {
         cell.textLabel.text = tweet;
     }
-    NSLog(@"%d",indexPath.row);
     
     if (indexPath.row == [self.results count] - 1) {
         //NSInteger
-       // NSInteger lastID = tweetDic[@"id"];
+//        NSInteger lastID = [tweetDic[@"id"] integerValue];
         //lastID -= 1;
-        
-        
-        
-        
         self.max_id = [[NSString alloc] initWithString:tweetDic[@"id_str"]];
-        
     }
     
     return cell;
@@ -184,7 +176,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 
 #pragma mark - API call
-#define RESULTS_PERPAGE @"3"
+#define RESULTS_PERPAGE @"5"
 
 - (void)loadQuery
 {
@@ -242,8 +234,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
              });
          }
      }];
-    
-    self.api_call_counter++;
 }
 
 #pragma mark - Connection Control
@@ -264,17 +254,20 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     NSError *jsonParsingError = nil;
     NSDictionary *jsonResults = [NSJSONSerialization JSONObjectWithData:self.buffer options:0 error:&jsonParsingError];
     
-//    //    self.results = jsonResults[@"statuses"];
-    [self.results addObjectsFromArray:jsonResults[@"statuses"]];
-//    上記のコードが何回も呼ばれてる模様 -> scroll methodをコメントアウトしてなかったから
-//    NSString *since_id = [[jsonResults objectForKey:@"search_metadata"] objectForKey:@"since_id"];
 
-//  Keeps returning 0
-//    self.max_id = jsonResults[@"search_metadata"][@"max_id"];
-
+//    if (self.connection_counter > 0) {
+//        [jsonResults[@"statuses"] removeObjectAtIndex:0];
+//    }
     
+    // try to remove the repeated tweet
+   // NSMutableArray *bufferResults = @[];
     
-// arrayのarrayを作るのはどう？
+    NSMutableArray *bufferResults = [jsonResults[@"statuses"] mutableCopy];
+    
+    [bufferResults addObjectsFromArray:jsonResults[@"statuses"]];
+    [bufferResults removeObjectAtIndex:0];
+    
+    [self.results addObjectsFromArray:bufferResults];
     
     
     if ([self.results count] == 0)
@@ -296,6 +289,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [self.tableView flashScrollIndicators];
     
     self.flagModel.isFinished = YES;
+    self.connection_counter++;
 
 }
 
@@ -358,38 +352,17 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 }
 
 
-#pragma mark - Scroll 
-//// http://stackoverflow.com/questions/10404116/uitableview-infinite-scrolling/31454471#31454471
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    CGFloat actualPosition = scrollView.contentOffset.y;
-//    // contentSize.height(実際のサイズ)より少し減らしておくことで、そこに到達した時点で（実際のcontentSize.heightに到達する前に）限界を上げてくれる
-//    CGFloat contentHeight = scrollView.contentSize.height - 500;
-//    if (actualPosition >= contentHeight) {
-//        
-//        [self loadQuery];
-//        [self.tableView reloadData];
-//    }
-//}
-
+#pragma mark - Scroll
 // http://nonbiri-tereka.hatenablog.com/entry/2014/03/02/092414
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if([self.flagModel shouldLoadNext:self.tableView]){
         [self loadQuery];
         [self.tableView reloadData];
-       // self.scrollMethod_counter++;
     }
 }
 
 
 
 
-
-
-
-// 上のメソッドだとスクロールするたびに呼ばれてる模様
-// resultsに入ってる一番下のセルが下に当たったらロードされるようにする
-// さらに、今は同じ検索結果をとってきて追加してるだけ。次の検索結果を追加できるようにする
-
-// API Callのコードを理解する
 
 @end
