@@ -9,6 +9,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JITableViewController : UITableViewController <UISearchBarDelegate,UITableViewDelegate,NSURLConnectionDataDelegate>
+@interface JITableViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSURLConnectionDataDelegate>
+
+
 
 @end

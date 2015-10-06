@@ -23,6 +23,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 @interface JITableViewController ()
 
+// Which is better, to declare in .h or .m
+@property (nonatomic,weak) UITableView *tableView;
+
+@property (nonatomic,weak) UIRefreshControl *refreshControl;
+
 // Properties used for API connection
 @property (nonatomic,strong) NSURLConnection *connection;
 @property (nonatomic,strong) NSMutableData *buffer;
@@ -76,9 +81,16 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UITableView *tableView = [[UITableView alloc] initWithFrame:[self.view bounds]];
+    [self.view addSubview:tableView];
+    self.tableView = tableView;
+    
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ResultCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoadingCell"];
+
+    // Do not forget to designate delegate and dataSource to self
     self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 50)];
     self.searchBar = searchBar;
@@ -96,6 +108,10 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     //
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
+    
+    // RefreshControl is only for tableView. Do not add it to UIViewController
+    // https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIRefreshControl_class/#//apple_ref/occ/instm/UIRefreshControl/init
+    [self.tableView addSubview:refreshControl];
     self.refreshControl = refreshControl;
 
     // Do not forget to instanciate any object properties

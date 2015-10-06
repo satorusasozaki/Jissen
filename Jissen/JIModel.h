@@ -11,7 +11,7 @@
 
 @interface JIModel : NSObject
 
-@property BOOL isFinished;
+@property (nonatomic,assign) BOOL isFinished;
 
 - (BOOL)shouldLoadNext:(UITableView *)tableView;
 
