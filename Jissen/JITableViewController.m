@@ -129,7 +129,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
         self.cell = cell;
         cell.textLabel.text = [self searchMessageForState:self.searchState];
-       // cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         return cell;
     }
     
@@ -149,10 +148,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     }
     
     if (indexPath.row == [self.results count] - 1) {
-        //NSInteger
-//        NSInteger lastID = [tweetDic[@"id"] integerValue];
-        //lastID -= 1;
-        self.max_id = [[NSString alloc] initWithString:tweetDic[@"id_str"]];
+//        self.max_id = [NSString stringWithString:tweetDic[@"id"]];
+        self.max_id = tweetDic[@"id"];
     }
     
     return cell;
@@ -176,7 +173,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 
 #pragma mark - API call
-#define RESULTS_PERPAGE @"5"
+#define RESULTS_PERPAGE @"20"
 
 - (void)loadQuery
 {
@@ -264,7 +261,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     
     NSMutableArray *bufferResults = [jsonResults[@"statuses"] mutableCopy];
     
-    [bufferResults addObjectsFromArray:jsonResults[@"statuses"]];
+   // [bufferResults addObjectsFromArray:jsonResults[@"statuses"]];
     [bufferResults removeObjectAtIndex:0];
     
     [self.results addObjectsFromArray:bufferResults];
