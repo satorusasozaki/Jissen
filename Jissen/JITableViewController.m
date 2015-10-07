@@ -47,8 +47,10 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 // To load next set of tweets
 @property (nonatomic,strong) InfiniteScrollComponents *flagModel;
 
-@property (nonatomic,strong) NSUserDefaults *searchHistory;
+//@property (nonatomic,strong) NSUserDefaults *searchHistory;
 @property (nonatomic,strong) NSMutableArray *searchHistoryArray;
+
+@property (nonatomic) BOOL isgoToHistoryCalled;
 
 @end
 
@@ -128,14 +130,18 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     
     NSMutableArray *searchHistoryArray = [NSMutableArray array];
     self.searchHistoryArray = searchHistoryArray;
-
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    self.isgoToHistoryCalled = NO;
 }
 
 
 - (void)goToHistory:(id)sender {
     JIHistoryViewController *historyViewController = [[JIHistoryViewController alloc] init];
-    historyViewController.searchHistory = self.searchHistory;
+//    historyViewController.searchHistory = self.searchHistory;
+    self.isgoToHistoryCalled = YES;
     [self.navigationController pushViewController:historyViewController animated:YES];
 }
 
@@ -175,31 +181,39 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
     self.cell = cell;
     
-    // Pick up the one JSON data set on "indexPath.row"th from self.results
-    // How can you know the
-    
-    // Pick up one tweet from self.results in which whole JSON data is stored
-    // NSDictionary object can contain some lines holding keys and values
-    NSDictionary *tweetDic = (self.results)[indexPath.row];
-    
-    // Pick up the value whose key is "text" from the lines
-    NSString *tweet = tweetDic[@"text"];
-
-    // Display tweet texts with specified length
-    if (tweet.length > 10) {
-        NSString *limitedTweet = [tweet substringToIndex:10];
-        NSString *combinedTweet = [NSString stringWithFormat:@"%@%@", limitedTweet, @"..."];
-        cell.textLabel.text = combinedTweet;
+    if (self.flagModel && count == 0) {
+        cell.textLabel.text = [self searchMessageForState:self.searchState];
     } else {
-        cell.textLabel.text = tweet;
+        // Pick up the one JSON data set on "indexPath.row"th from self.results
+        // How can you know the
+        
+        // Pick up one tweet from self.results in which whole JSON data is stored
+        // NSDictionary object can contain some lines holding keys and values
+        NSDictionary *tweetDic = (self.results)[indexPath.row];
+        
+
+        // Pick up the value whose key is "text" from the lines
+        NSString *tweet = tweetDic[@"text"];
+
+        // Display tweet texts with specified length
+        if (tweet.length > 10) {
+            NSString *limitedTweet = [tweet substringToIndex:10];
+            NSString *combinedTweet = [NSString stringWithFormat:@"%@%@", limitedTweet, @"..."];
+            cell.textLabel.text = combinedTweet;
+        } else {
+            cell.textLabel.text = tweet;
+        }
+        
+        // indexPath.row always starts with 0, although the size of the array obtained from count method is counted from 1
+        // Thus, -1 needed
+        if (indexPath.row == [self.results count] - 1) {
+            // self.max_id will unexpectedly be nill, when @"id" used
+            self.max_id = tweetDic[@"id_str"];
+        }
     }
+
     
-    // indexPath.row always starts with 0, although the size of the array obtained from count method is counted from 1
-    // Thus, -1 needed
-    if (indexPath.row == [self.results count] - 1) {
-        // self.max_id will unexpectedly be nill, when @"id" used
-        self.max_id = tweetDic[@"id_str"];
-    }
+
     return cell;
 }
 
@@ -300,21 +314,22 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     NSError *jsonParsingError = nil;
     NSDictionary *jsonResults = [NSJSONSerialization JSONObjectWithData:self.buffer options:0 error:&jsonParsingError];
     NSMutableArray *bufferResults = [jsonResults[@"statuses"] mutableCopy];
-    [bufferResults removeObjectAtIndex:0];
-    
+    if ([bufferResults count] > 1) {
+        [bufferResults removeObjectAtIndex:0];
+    }
     [self.results addObjectsFromArray:bufferResults];
     
     if ([self.results count] == 0)
     {
-        NSArray *errors = jsonResults[@"errors"];
-        if ([errors count])
-        {
-            self.searchState = UYLTwitterSearchStateFailed;
-        }
-        else
-        {
+//        NSArray *errors = jsonResults[@"errors"];
+//        if ([errors count])
+//        {
+//            self.searchState = UYLTwitterSearchStateFailed;
+//        }
+//        else
+//        {
             self.searchState = UYLTwitterSearchStateNotFound;
-        }
+//        }
     }
     
     self.buffer = nil;
@@ -371,16 +386,21 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.searchBar.showsCancelButton = NO;
     [self.results removeAllObjects];
     
-    NSUserDefaults *searchHistory = [NSUserDefaults standardUserDefaults];
+//    NSUserDefaults *searchHistory = [NSUserDefaults standardUserDefaults];
       // string
 //    [searchHistory setObject:self.searchBar.text forKey:@"searchedText"];
     
     // array
-    [self.searchHistoryArray addObject:self.searchBar.text];
-    [searchHistory setObject:self.searchHistoryArray forKey:@"searchedText"];
+    NSMutableArray *arrayFromUserDefaults = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"]];
     
-    
-    self.searchHistory = searchHistory;
+    // [self.searchHistoryArray addObject:self.searchBar.text];
+    [arrayFromUserDefaults addObject:self.searchBar.text];
+    [[NSUserDefaults standardUserDefaults] setObject:arrayFromUserDefaults forKey:@"searchedText"];
+    BOOL success = [[NSUserDefaults standardUserDefaults] synchronize];
+    if (success) {
+        NSLog(@"%@",@"Yeah");
+    }
+//    self.searchHistory = searchHistory;
 
     
 //    BOOL successful = [searchHistory synchronize];
@@ -403,7 +423,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 #pragma mark - Scroll
 // http://nonbiri-tereka.hatenablog.com/entry/2014/03/02/092414
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if([self.flagModel shouldLoadNext:self.tableView]){
+    if([self.flagModel shouldLoadNext:self.tableView] && !self.isgoToHistoryCalled){
         [self loadQuery];
         [self.tableView reloadData];
     }

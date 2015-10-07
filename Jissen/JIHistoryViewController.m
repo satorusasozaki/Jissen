@@ -23,7 +23,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    NSArray *searchHistoryArray = [self.searchHistory arrayForKey:@"searchedText"];
+    NSArray *searchHistoryArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"];
     self.searchHistoryArray = searchHistoryArray;
     
     
