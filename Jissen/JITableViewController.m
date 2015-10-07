@@ -416,6 +416,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 #pragma mark - Refresh Control
 
 - (void)handleRefresh:(id)sender {
+    [self.results removeAllObjects];
     [self loadQuery];
     [self cancelConnection];
 }
