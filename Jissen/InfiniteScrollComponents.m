@@ -1,14 +1,14 @@
 //
-//  JIModel.m
+//  InfiniteScrollComponents.m
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 10/5/15.
 //  Copyright © 2015 Satoru Sasozaki. All rights reserved.
 //
 
-#import "JIModel.h"
+#import "InfiniteScrollComponents.h"
 
-@implementation JIModel
+@implementation InfiniteScrollComponents
 
 
 - (BOOL)shouldLoadNext:(UITableView *)tableView {

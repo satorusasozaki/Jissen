@@ -11,7 +11,8 @@
 #import <Social/Social.h>
 #import "JIDetailViewController.h"
 #import "JITableViewCell.h"
-#import "JIModel.h"
+#import "InfiniteScrollComponents.h"
+#import "JIHistoryViewController.h"
 
 // For connection statuts
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
@@ -22,9 +23,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 };
 
 @interface JITableViewController ()
-
-// Which is better, to declare in .h or .m
-@property (nonatomic,weak) UITableView *tableView;
 
 @property (nonatomic,weak) UIRefreshControl *refreshControl;
 
@@ -47,7 +45,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 // Used to know when API call is finished
 // To load next set of tweets
-@property (nonatomic,strong) JIModel *flagModel;
+@property (nonatomic,strong) InfiniteScrollComponents *flagModel;
+
+@property (nonatomic,strong) NSUserDefaults *searchHistory;
+@property (nonatomic,strong) NSMutableArray *searchHistoryArray;
+
 @end
 
 @implementation JITableViewController
@@ -110,12 +112,31 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.refreshControl = refreshControl;
 
     // Do not forget to instanciate any object properties
-    self.flagModel = [[JIModel alloc] init];
+    self.flagModel = [[InfiniteScrollComponents alloc] init];
     
     // UIButton
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     UIBarButtonItem *buttonToHistory = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = buttonToHistory;
+    
+    // http://stackoverflow.com/questions/2848055/add-button-to-navigationbar-programatically
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStylePlain target:self action:@selector(goToHistory:)];
+//    [myButton addTarget:self
+//                 action:@selector(myAction)
+//       forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    NSMutableArray *searchHistoryArray = [NSMutableArray array];
+    self.searchHistoryArray = searchHistoryArray;
+
+    
+}
+
+
+- (void)goToHistory:(id)sender {
+    JIHistoryViewController *historyViewController = [[JIHistoryViewController alloc] init];
+    historyViewController.searchHistory = self.searchHistory;
+    [self.navigationController pushViewController:historyViewController animated:YES];
 }
 
 
@@ -348,6 +369,25 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     self.searchBar.showsCancelButton = NO;
+    [self.results removeAllObjects];
+    
+    NSUserDefaults *searchHistory = [NSUserDefaults standardUserDefaults];
+      // string
+//    [searchHistory setObject:self.searchBar.text forKey:@"searchedText"];
+    
+    // array
+    [self.searchHistoryArray addObject:self.searchBar.text];
+    [searchHistory setObject:self.searchHistoryArray forKey:@"searchedText"];
+    
+    
+    self.searchHistory = searchHistory;
+
+    
+//    BOOL successful = [searchHistory synchronize];
+//    if (successful) {
+//        NSLog(@"%@", @"succeeded");
+//    }
+    
     self.query = self.searchBar.text;
     [self loadQuery];
     [self cancelConnection];
@@ -368,5 +408,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         [self.tableView reloadData];
     }
 }
+
+
 
 @end

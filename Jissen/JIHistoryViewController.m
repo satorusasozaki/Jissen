@@ -7,8 +7,11 @@
 //
 
 #import "JIHistoryViewController.h"
+#import "JITableViewCell.h"
 
 @interface JIHistoryViewController ()
+
+@property (nonatomic,strong) NSArray *searchHistoryArray;
 
 @end
 
@@ -16,5 +19,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.tableView registerClass:[JITableViewCell class] forCellReuseIdentifier:@"historyCell"];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    NSArray *searchHistoryArray = [self.searchHistory arrayForKey:@"searchedText"];
+    self.searchHistoryArray = searchHistoryArray;
+    
+    
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger count = [self.searchHistoryArray count];
+    return count > 0 ? count : 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *historyCellIdentifier = @"historyCell";
+    JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCellIdentifier];
+    cell.textLabel.text = [self.searchHistoryArray objectAtIndex:indexPath.row];
+    return cell;
 }
 @end

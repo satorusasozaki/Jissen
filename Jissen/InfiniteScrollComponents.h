@@ -1,5 +1,5 @@
 //
-//  JIModel.h
+//  InfiniteScrollComponents.h
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 10/5/15.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JITableViewController.h"
 
-@interface JIModel : NSObject
+@interface InfiniteScrollComponents : NSObject
 
 @property (nonatomic,assign) BOOL isFinished;
 
