@@ -80,11 +80,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    UITableView *tableView = [[UITableView alloc] initWithFrame:[self.view bounds]];
-    [self.view addSubview:tableView];
-    self.tableView = tableView;
-    
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ResultCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoadingCell"];
 
@@ -116,7 +111,13 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
     // Do not forget to instanciate any object properties
     self.flagModel = [[JIModel alloc] init];
+    
+    // UIButton
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIBarButtonItem *buttonToHistory = [[UIBarButtonItem alloc]initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = buttonToHistory;
 }
+
 
 #pragma mark - <Table view data source>
 
@@ -205,8 +206,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (void)loadQuery
 {
+    // isFinished turned NO, since API call starts here
     self.flagModel.isFinished = NO;
     self.searchState = UYLTwitterSearchStateLoading;
+    
+    // Need to research: what is percentEscapes?
     NSString *encodedQuery = [self.query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     ACAccountType *accountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [self.accountStore requestAccessToAccountsWithType:accountType

@@ -8,8 +8,9 @@
 //  http://useyourloaf.com/blog/migrating-to-the-new-twitter-search-api.html
 
 #import <UIKit/UIKit.h>
+#import "JIBaseTableViewController.h"
 
-@interface JITableViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSURLConnectionDataDelegate>
+@interface JITableViewController : JIBaseTableViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSURLConnectionDataDelegate>
 
 
 
