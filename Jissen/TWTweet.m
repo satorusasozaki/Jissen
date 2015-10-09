@@ -10,4 +10,10 @@
 
 @implementation TWTweet
 
+// Create actual tweet text from dictionary
+- (NSString *)tweetWithDictionary:(NSDictionary *)dictionary {
+    return dictionary[@"text"];
+}
+
+
 @end

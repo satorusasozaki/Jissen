@@ -1,5 +1,5 @@
 //
-//  JITableViewCell.h
+//  JIBaseCell.h
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 9/30/15.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JITableViewCell : UITableViewCell
+@interface JIBaseCell : UITableViewCell
 
 @end

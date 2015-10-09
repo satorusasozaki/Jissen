@@ -10,9 +10,11 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import "JIDetailViewController.h"
-#import "JITableViewCell.h"
+#import "JIBaseCell.h"
+#import "JITweetCell.h"
 #import "ISComponents.h"
 #import "JIHistoryViewController.h"
+#import "JITweetCell.h"
 
 // For connection statuts
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
@@ -83,7 +85,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ResultCell"];
+    [self.tableView registerClass:[JITweetCell class] forCellReuseIdentifier:@"ResultCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"LoadingCell"];
 
     // Do not forget to designate delegate and dataSource to self
@@ -173,7 +175,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     static NSString *ResultCellIdentifier = @"ResultCell";
     static NSString *LoadCellIdentifier = @"LoadingCell";
     
-    UITableViewCell *cell = nil;
+    JIBaseCell *cell = nil;
+    JITweetCell *tweetCell = nil;
     
     // Needed to return plain cell just after viewDidLoad, because self.results is empty and cannot return anything since API call has not happen yet
     // Since self.result is 0, numberOfRowsInsection returns just 1 and one cell will be displayed
@@ -181,7 +184,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     if ((count == 0) && (indexPath.row == 0)) {
         cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
     } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
+        tweetCell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
 //    cell.tweet = [Tweet tweetWithDictionary:self.results[indexPath.row]];
     }
 
@@ -204,7 +207,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         if (tweet.length > 10) {
             tweet = [NSString stringWithFormat:@"%@%@", [tweet substringToIndex:10], @"..."];
         }
-        cell.textLabel.text = tweet;
+        tweetCell.tweet.text = tweet;
         
         // indexPath.row always starts with 0, although the size of the array obtained from count method is counted from 1
         // Thus, -1 needed
@@ -213,7 +216,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
             self.max_id = tweetDic[@"id_str"];
         }
     }
-    return cell;
+    
+    return cell? cell : tweetCell;
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -333,8 +338,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.didEndEditingText = NO;
     self.infiniteScrollComponents.isLoading = NO;
 }
-
-
 
 #pragma mark - Search Bar Control
     

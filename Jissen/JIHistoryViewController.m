@@ -7,7 +7,7 @@
 //
 
 #import "JIHistoryViewController.h"
-#import "JITableViewCell.h"
+#import "JIBaseCell.h"
 
 @interface JIHistoryViewController ()
 
@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableView registerClass:[JITableViewCell class] forCellReuseIdentifier:@"historyCell"];
+    [self.tableView registerClass:[JIBaseCell class] forCellReuseIdentifier:@"historyCell"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -35,7 +35,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *historyCellIdentifier = @"historyCell";
-    JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCellIdentifier];
+    JIBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCellIdentifier];
     cell.textLabel.text = [self.searchHistoryArray objectAtIndex:indexPath.row];
     return cell;
 }
