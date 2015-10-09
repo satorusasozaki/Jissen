@@ -11,6 +11,4 @@
 
 @interface JIHistoryViewController : JIBaseTableViewController <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic,strong) NSUserDefaults *searchHistory;
-
 @end

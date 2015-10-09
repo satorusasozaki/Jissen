@@ -47,10 +47,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 // To load next set of tweets
 @property (nonatomic,strong) InfiniteScrollComponents *flagModel;
 
-//@property (nonatomic,strong) NSUserDefaults *searchHistory;
 @property (nonatomic,strong) NSMutableArray *searchHistoryArray;
 
-@property (nonatomic) BOOL isgoToHistoryCalled;
+@property (nonatomic) BOOL didLeaveCurrentViewController;
 
 @end
 
@@ -134,14 +133,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    self.isgoToHistoryCalled = NO;
+    self.didLeaveCurrentViewController = NO;
 }
 
 
 - (void)goToHistory:(id)sender {
     JIHistoryViewController *historyViewController = [[JIHistoryViewController alloc] init];
 //    historyViewController.searchHistory = self.searchHistory;
-    self.isgoToHistoryCalled = YES;
+    self.didLeaveCurrentViewController = YES;
     [self.navigationController pushViewController:historyViewController animated:YES];
 }
 
@@ -194,15 +193,12 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
         // Pick up the value whose key is "text" from the lines
         NSString *tweet = tweetDic[@"text"];
-
+        
         // Display tweet texts with specified length
         if (tweet.length > 10) {
-            NSString *limitedTweet = [tweet substringToIndex:10];
-            NSString *combinedTweet = [NSString stringWithFormat:@"%@%@", limitedTweet, @"..."];
-            cell.textLabel.text = combinedTweet;
-        } else {
-            cell.textLabel.text = tweet;
+            tweet = [NSString stringWithFormat:@"%@%@", [tweet substringToIndex:10], @"..."];
         }
+        cell.textLabel.text = tweet;
         
         // indexPath.row always starts with 0, although the size of the array obtained from count method is counted from 1
         // Thus, -1 needed
@@ -211,9 +207,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
             self.max_id = tweetDic[@"id_str"];
         }
     }
-
-    
-
     return cell;
 }
 
@@ -221,12 +214,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     JIDetailViewController *detailViewController = [[JIDetailViewController alloc] init];
     detailViewController.title = @"Detail";
+    
+    self.didLeaveCurrentViewController = YES;
 
     // Avoid to go to detailView when the dummy cell which is created before API call tapped
     if([self.cell.reuseIdentifier isEqual:@"ResultCell"]) {
         
         // Create NSDictionary object so that you can specifiy the key to pick a value
-        NSDictionary *tweetDic = (self.results)[indexPath.row];
+        NSDictionary *tweetDic = self.results[indexPath.row];
         NSString *tweetText = tweetDic[@"text"];
         
         // Assign whole tweet text to tweet property in detailViewController
@@ -397,9 +392,10 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [arrayFromUserDefaults addObject:self.searchBar.text];
     [[NSUserDefaults standardUserDefaults] setObject:arrayFromUserDefaults forKey:@"searchedText"];
     BOOL success = [[NSUserDefaults standardUserDefaults] synchronize];
-    if (success) {
-        NSLog(@"%@",@"Yeah");
-    }
+    
+//    if (success) {
+//        NSLog(@"%@",@"Yeah");
+//    }
 //    self.searchHistory = searchHistory;
 
     
@@ -424,7 +420,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 #pragma mark - Scroll
 // http://nonbiri-tereka.hatenablog.com/entry/2014/03/02/092414
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if([self.flagModel shouldLoadNext:self.tableView] && !self.isgoToHistoryCalled){
+    if([self.flagModel shouldLoadNext:self.tableView] && !self.didLeaveCurrentViewController){
         [self loadQuery];
         [self.tableView reloadData];
     }

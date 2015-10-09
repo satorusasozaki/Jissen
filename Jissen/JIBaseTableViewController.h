@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JIBaseTableViewController : UIViewController // <UITableViewDataSource, UITableViewDelegate>
+@interface JIBaseTableViewController : UIViewController
 
 @property (nonatomic,weak) UITableView *tableView;
 
