@@ -11,7 +11,7 @@
 #import <Social/Social.h>
 #import "JIDetailViewController.h"
 #import "JITableViewCell.h"
-#import "InfiniteScrollComponents.h"
+#import "ISComponents.h"
 #import "JIHistoryViewController.h"
 
 // For connection statuts
@@ -36,7 +36,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 // UI components
 @property (nonatomic,weak) UISearchBar *searchBar;
-@property (nonatomic,weak) JITableViewCell *cell;
 
 // The ID of last tweet from one API call
 // This ID will be the first ID of tweet in the next API call
@@ -45,11 +44,12 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 // Used to know when API call is finished
 // To load next set of tweets
-@property (nonatomic,strong) InfiniteScrollComponents *flagModel;
+@property (nonatomic,strong) ISComponents *infiniteScrollComponents;
 
 @property (nonatomic,strong) NSMutableArray *searchHistoryArray;
 
 @property (nonatomic) BOOL didLeaveCurrentViewController;
+@property (nonatomic) BOOL didEndEditingText;
 
 @end
 
@@ -113,7 +113,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.refreshControl = refreshControl;
 
     // Do not forget to instanciate any object properties
-    self.flagModel = [[InfiniteScrollComponents alloc] init];
+    self.infiniteScrollComponents = [[ISComponents alloc] init];
     
     // UIButton
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -152,9 +152,15 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = [self.results count];
-    // Avoid to crash when self.results is empty
-    return count > 0 ? count : 1;
+    NSInteger count;
+    if ([self.results count] > 0) {
+        count = [self.results count];
+    } else if (self.infiniteScrollComponents.isLoading) {
+        count = 1;
+    } else {
+        count = 0;
+    }
+    return count;
 
 }
 
@@ -167,28 +173,28 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     static NSString *ResultCellIdentifier = @"ResultCell";
     static NSString *LoadCellIdentifier = @"LoadingCell";
     
+    UITableViewCell *cell = nil;
+    
     // Needed to return plain cell just after viewDidLoad, because self.results is empty and cannot return anything since API call has not happen yet
     // Since self.result is 0, numberOfRowsInsection returns just 1 and one cell will be displayed
     NSUInteger count = [self.results count];
     if ((count == 0) && (indexPath.row == 0)) {
-        JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
-        self.cell = cell;
-        return cell;
+        cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
+//    cell.tweet = [Tweet tweetWithDictionary:self.results[indexPath.row]];
     }
+
     
-    // Executed after self.results obtained its contents
-    JITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
-    self.cell = cell;
-    
-    if (self.flagModel && count == 0) {
-        cell.textLabel.text = [self searchMessageForState:self.searchState];
+    if (([cell reuseIdentifier] == LoadCellIdentifier) && self.infiniteScrollComponents.isLoading) {
+        cell.textLabel.text = [self searchMessageForState:UYLTwitterSearchStateLoading];
     } else {
         // Pick up the one JSON data set on "indexPath.row"th from self.results
         // How can you know the
         
         // Pick up one tweet from self.results in which whole JSON data is stored
         // NSDictionary object can contain some lines holding keys and values
-        NSDictionary *tweetDic = (self.results)[indexPath.row];
+        NSDictionary *tweetDic = self.results[indexPath.row];
         
 
         // Pick up the value whose key is "text" from the lines
@@ -212,13 +218,13 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    JIDetailViewController *detailViewController = [[JIDetailViewController alloc] init];
-    detailViewController.title = @"Detail";
-    
-    self.didLeaveCurrentViewController = YES;
+
 
     // Avoid to go to detailView when the dummy cell which is created before API call tapped
-    if([self.cell.reuseIdentifier isEqual:@"ResultCell"]) {
+      if([[[self tableView:tableView cellForRowAtIndexPath:indexPath] reuseIdentifier] isEqual:@"ResultCell"]) {
+        JIDetailViewController *detailViewController = [[JIDetailViewController alloc] init];
+        detailViewController.title = @"Detail";
+        self.didLeaveCurrentViewController = YES;
         
         // Create NSDictionary object so that you can specifiy the key to pick a value
         NSDictionary *tweetDic = self.results[indexPath.row];
@@ -237,7 +243,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 - (void)loadQuery
 {
     // isFinished turned NO, since API call starts here
-    self.flagModel.isFinished = NO;
+    self.infiniteScrollComponents.isLoading = YES;
     self.searchState = UYLTwitterSearchStateLoading;
     
     // Need to research: what is percentEscapes?
@@ -309,22 +315,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     NSError *jsonParsingError = nil;
     NSDictionary *jsonResults = [NSJSONSerialization JSONObjectWithData:self.buffer options:0 error:&jsonParsingError];
     NSMutableArray *bufferResults = [jsonResults[@"statuses"] mutableCopy];
-    if ([bufferResults count] > 1) {
+    if ( ([bufferResults count] > 1) && self.didEndEditingText == NO) {
         [bufferResults removeObjectAtIndex:0];
     }
     [self.results addObjectsFromArray:bufferResults];
     
     if ([self.results count] == 0)
     {
-//        NSArray *errors = jsonResults[@"errors"];
-//        if ([errors count])
-//        {
-//            self.searchState = UYLTwitterSearchStateFailed;
-//        }
-//        else
-//        {
             self.searchState = UYLTwitterSearchStateNotFound;
-//        }
     }
     
     self.buffer = nil;
@@ -332,40 +330,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [self.tableView reloadData];
     [self.tableView flashScrollIndicators];
     
-    self.flagModel.isFinished = YES;
+    self.didEndEditingText = NO;
+    self.infiniteScrollComponents.isLoading = NO;
 }
 
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    self.connection = nil;
-    self.buffer = nil;
-    [self.refreshControl endRefreshing];
-    self.searchState = UYLTwitterSearchStateFailed;
-    
-    [self handleError:error];
-    [self.tableView reloadData];
-}
-
-- (void)handleError:(NSError *)error {
-    NSString *errorMessage = [error localizedDescription];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Connection Error"
-                                                        message:errorMessage
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-    [alertView show];
-}
-
-- (void)cancelConnection {
-    if (self.connection != nil)
-    {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        [self.connection cancel];
-        self.connection = nil;
-        self.buffer = nil;
-    }
-}
 
 #pragma mark - Search Bar Control
     
@@ -381,32 +350,13 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.searchBar.showsCancelButton = NO;
     [self.results removeAllObjects];
     
-//    NSUserDefaults *searchHistory = [NSUserDefaults standardUserDefaults];
-      // string
-//    [searchHistory setObject:self.searchBar.text forKey:@"searchedText"];
-    
-    // array
     NSMutableArray *arrayFromUserDefaults = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"]];
-    
-    // [self.searchHistoryArray addObject:self.searchBar.text];
     [arrayFromUserDefaults addObject:self.searchBar.text];
     [[NSUserDefaults standardUserDefaults] setObject:arrayFromUserDefaults forKey:@"searchedText"];
-    BOOL success = [[NSUserDefaults standardUserDefaults] synchronize];
-    
-//    if (success) {
-//        NSLog(@"%@",@"Yeah");
-//    }
-//    self.searchHistory = searchHistory;
-
-    
-//    BOOL successful = [searchHistory synchronize];
-//    if (successful) {
-//        NSLog(@"%@", @"succeeded");
-//    }
-    
+    [[NSUserDefaults standardUserDefaults] synchronize];
     self.query = self.searchBar.text;
+    self.didEndEditingText = YES;
     [self loadQuery];
-    [self cancelConnection];
 }
 
 #pragma mark - Refresh Control
@@ -414,13 +364,13 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 - (void)handleRefresh:(id)sender {
     [self.results removeAllObjects];
     [self loadQuery];
-    [self cancelConnection];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Scroll
 // http://nonbiri-tereka.hatenablog.com/entry/2014/03/02/092414
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if([self.flagModel shouldLoadNext:self.tableView] && !self.didLeaveCurrentViewController){
+    if([self.infiniteScrollComponents shouldLoadNext:self.tableView] && !self.didLeaveCurrentViewController){
         [self loadQuery];
         [self.tableView reloadData];
     }

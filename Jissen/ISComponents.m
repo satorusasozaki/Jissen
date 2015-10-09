@@ -1,19 +1,19 @@
 //
-//  InfiniteScrollComponents.m
+//  ISComponents.m
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 10/5/15.
 //  Copyright © 2015 Satoru Sasozaki. All rights reserved.
 //
 
-#import "InfiniteScrollComponents.h"
+#import "ISComponents.h"
 
-@implementation InfiniteScrollComponents
+@implementation ISComponents
 
 
 - (BOOL)shouldLoadNext:(UITableView *)tableView {
     BOOL shouldLoadNext;
-    if (self.isFinished && tableView.contentOffset.y >= (tableView.contentSize.height - tableView.bounds.size.height)) {
+    if ( (self.isLoading == NO) && tableView.contentOffset.y >= (tableView.contentSize.height - tableView.bounds.size.height) ) {
         shouldLoadNext = YES;
     } else {
         shouldLoadNext = NO;

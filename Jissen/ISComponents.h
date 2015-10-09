@@ -1,5 +1,5 @@
 //
-//  InfiniteScrollComponents.h
+//  ISComponents.h
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 10/5/15.
@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "JITableViewController.h"
 
-@interface InfiniteScrollComponents : NSObject
+@interface ISComponents : NSObject
 
-@property (nonatomic,assign) BOOL isFinished;
+@property (nonatomic,assign) BOOL isLoading;
 
 - (BOOL)shouldLoadNext:(UITableView *)tableView;
 

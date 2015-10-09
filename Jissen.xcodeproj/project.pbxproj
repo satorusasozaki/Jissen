@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		6036323A1BBD088800C7FC4A /* JINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603632391BBD088800C7FC4A /* JINavigationController.m */; settings = {ASSET_TAGS = (); }; };
 		6036323D1BBD13DD00C7FC4A /* JIDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036323C1BBD13DD00C7FC4A /* JIDetailViewController.m */; settings = {ASSET_TAGS = (); }; };
-		60383E4A1BC32B6E00535350 /* InfiniteScrollComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 60383E491BC32B6E00535350 /* InfiniteScrollComponents.m */; settings = {ASSET_TAGS = (); }; };
+		60383E4A1BC32B6E00535350 /* ISComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 60383E491BC32B6E00535350 /* ISComponents.m */; settings = {ASSET_TAGS = (); }; };
 		6052CA4C1BBC980300D5036A /* JITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6052CA4B1BBC980300D5036A /* JITableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		6099A7E41BB39E0D00436AA1 /* JITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099A7E31BB39E0D00436AA1 /* JITableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		60CE85C01BB254F70086FB0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85BF1BB254F70086FB0D /* main.m */; };
@@ -20,6 +20,7 @@
 		60CE85E71BB254F70086FB0D /* JissenUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85E61BB254F70086FB0D /* JissenUITests.m */; };
 		60D1D9741BC4C3DD0095BF1E /* JIBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1D9731BC4C3DD0095BF1E /* JIBaseTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		60D1D9771BC4C5CB0095BF1E /* JIHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1D9761BC4C5CB0095BF1E /* JIHistoryViewController.m */; settings = {ASSET_TAGS = (); }; };
+		60D338C51BC79F6600ADF59A /* TWTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D338C41BC79F6600ADF59A /* TWTweet.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +45,8 @@
 		603632391BBD088800C7FC4A /* JINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JINavigationController.m; sourceTree = "<group>"; };
 		6036323B1BBD13DD00C7FC4A /* JIDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIDetailViewController.h; sourceTree = "<group>"; };
 		6036323C1BBD13DD00C7FC4A /* JIDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JIDetailViewController.m; sourceTree = "<group>"; };
-		60383E481BC32B6E00535350 /* InfiniteScrollComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfiniteScrollComponents.h; sourceTree = "<group>"; };
-		60383E491BC32B6E00535350 /* InfiniteScrollComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfiniteScrollComponents.m; sourceTree = "<group>"; };
+		60383E481BC32B6E00535350 /* ISComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISComponents.h; sourceTree = "<group>"; };
+		60383E491BC32B6E00535350 /* ISComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISComponents.m; sourceTree = "<group>"; };
 		6052CA4A1BBC980300D5036A /* JITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JITableViewCell.h; sourceTree = "<group>"; };
 		6052CA4B1BBC980300D5036A /* JITableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JITableViewCell.m; sourceTree = "<group>"; };
 		6099A7E21BB39E0D00436AA1 /* JITableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JITableViewController.h; sourceTree = "<group>"; };
@@ -67,6 +68,8 @@
 		60D1D9731BC4C3DD0095BF1E /* JIBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JIBaseTableViewController.m; sourceTree = "<group>"; };
 		60D1D9751BC4C5CB0095BF1E /* JIHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIHistoryViewController.h; sourceTree = "<group>"; };
 		60D1D9761BC4C5CB0095BF1E /* JIHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JIHistoryViewController.m; sourceTree = "<group>"; };
+		60D338C31BC79F6600ADF59A /* TWTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTweet.h; sourceTree = "<group>"; };
+		60D338C41BC79F6600ADF59A /* TWTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTweet.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,8 +134,10 @@
 				603632391BBD088800C7FC4A /* JINavigationController.m */,
 				6036323B1BBD13DD00C7FC4A /* JIDetailViewController.h */,
 				6036323C1BBD13DD00C7FC4A /* JIDetailViewController.m */,
-				60383E481BC32B6E00535350 /* InfiniteScrollComponents.h */,
-				60383E491BC32B6E00535350 /* InfiniteScrollComponents.m */,
+				60383E481BC32B6E00535350 /* ISComponents.h */,
+				60383E491BC32B6E00535350 /* ISComponents.m */,
+				60D338C31BC79F6600ADF59A /* TWTweet.h */,
+				60D338C41BC79F6600ADF59A /* TWTweet.m */,
 				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
 				60CE85D21BB254F70086FB0D /* Info.plist */,
 				60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */,
@@ -296,7 +301,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				60D1D9771BC4C5CB0095BF1E /* JIHistoryViewController.m in Sources */,
-				60383E4A1BC32B6E00535350 /* InfiniteScrollComponents.m in Sources */,
+				60D338C51BC79F6600ADF59A /* TWTweet.m in Sources */,
+				60383E4A1BC32B6E00535350 /* ISComponents.m in Sources */,
 				60D1D9741BC4C3DD0095BF1E /* JIBaseTableViewController.m in Sources */,
 				6036323A1BBD088800C7FC4A /* JINavigationController.m in Sources */,
 				60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */,
