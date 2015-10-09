@@ -15,6 +15,7 @@
 #import "ISComponents.h"
 #import "JIHistoryViewController.h"
 #import "JITweetCell.h"
+#import "TWTweet.h"
 
 // For connection statuts
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
@@ -192,28 +193,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     if (([cell reuseIdentifier] == LoadCellIdentifier) && self.infiniteScrollComponents.isLoading) {
         cell.textLabel.text = [self searchMessageForState:UYLTwitterSearchStateLoading];
     } else {
-        // Pick up the one JSON data set on "indexPath.row"th from self.results
-        // How can you know the
-        
-        // Pick up one tweet from self.results in which whole JSON data is stored
-        // NSDictionary object can contain some lines holding keys and values
-        NSDictionary *tweetDic = self.results[indexPath.row];
-        
+        tweetCell.tweet.text = [tweetCell limitTweet:[TWTweet tweetWithDictionary:self.results[indexPath.row]]];
 
-        // Pick up the value whose key is "text" from the lines
-        NSString *tweet = tweetDic[@"text"];
-        
-        // Display tweet texts with specified length
-        if (tweet.length > 10) {
-            tweet = [NSString stringWithFormat:@"%@%@", [tweet substringToIndex:10], @"..."];
-        }
-        tweetCell.tweet.text = tweet;
         
         // indexPath.row always starts with 0, although the size of the array obtained from count method is counted from 1
         // Thus, -1 needed
         if (indexPath.row == [self.results count] - 1) {
             // self.max_id will unexpectedly be nill, when @"id" used
-            self.max_id = tweetDic[@"id_str"];
+            self.max_id = (self.results)[indexPath.row][@"id_str"];
         }
     }
     
@@ -232,11 +219,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         self.didLeaveCurrentViewController = YES;
         
         // Create NSDictionary object so that you can specifiy the key to pick a value
-        NSDictionary *tweetDic = self.results[indexPath.row];
-        NSString *tweetText = tweetDic[@"text"];
-        
+          
         // Assign whole tweet text to tweet property in detailViewController
-        detailViewController.tweet = tweetText;
+        detailViewController.tweet = [TWTweet tweetWithDictionary:self.results[indexPath.row]];
         [self.navigationController pushViewController:detailViewController animated:YES];
     }
 }

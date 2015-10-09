@@ -10,6 +10,6 @@
 
 @interface TWTweet : NSObject
 
-- (NSString *)tweetWithDictionary:(NSString *)dictionary;
++ (NSString *)tweetWithDictionary:(NSDictionary *)dictionary;
 
 @end
