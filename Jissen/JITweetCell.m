@@ -16,7 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         UILabel *tweet = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 300, 30)];
-        [self addSubview:tweet];
+        [self.contentView addSubview:tweet];
         self.tweet = tweet;
     }
     return self;

@@ -11,9 +11,16 @@
 @implementation TWTweet
 
 // Create actual tweet text from dictionary
-+ (NSString *)tweetWithDictionary:(NSDictionary *)dictionary {
-    return dictionary[@"text"];
+
+
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary {
+    self = [super init];
+    if (self) {
+        self.text = dictionary[@"text"];
+    }
+    return self;
 }
+
 
 
 @end

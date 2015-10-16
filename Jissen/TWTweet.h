@@ -10,6 +10,8 @@
 
 @interface TWTweet : NSObject
 
-+ (NSString *)tweetWithDictionary:(NSDictionary *)dictionary;
+@property (nonatomic,strong) NSString *text;
+
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

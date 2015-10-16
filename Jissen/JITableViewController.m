@@ -12,7 +12,7 @@
 #import "JIDetailViewController.h"
 #import "JIBaseCell.h"
 #import "JITweetCell.h"
-#import "ISComponents.h"
+#import "InfiniteScrollTrigger.h"
 #import "JIHistoryViewController.h"
 #import "JITweetCell.h"
 #import "TWTweet.h"
@@ -48,7 +48,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 // Used to know when API call is finished
 // To load next set of tweets
-@property (nonatomic,strong) ISComponents *infiniteScrollComponents;
+@property (nonatomic,strong) InfiniteScrollTrigger *infiniteScrollTrigger;
 
 @property (nonatomic,strong) NSMutableArray *searchHistoryArray;
 
@@ -117,7 +117,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.refreshControl = refreshControl;
 
     // Do not forget to instanciate any object properties
-    self.infiniteScrollComponents = [[ISComponents alloc] init];
+    self.infiniteScrollTrigger = [[InfiniteScrollTrigger alloc] init];
     
     // UIButton
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -157,7 +157,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     NSInteger count;
     if ([self.results count] > 0) {
         count = [self.results count];
-    } else if (self.infiniteScrollComponents.isLoading) {
+    } else if (self.infiniteScrollTrigger.isLoading) {
         count = 1;
     } else {
         count = 0;
@@ -186,10 +186,13 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     }
 
     
-    if (([cell reuseIdentifier] == LoadCellIdentifier) && self.infiniteScrollComponents.isLoading) {
+    if (([cell reuseIdentifier] == LoadCellIdentifier) && self.infiniteScrollTrigger.isLoading) {
         cell.textLabel.text = [self searchMessageForState:UYLTwitterSearchStateLoading];
     } else {
-        tweetCell.tweet.text = [tweetCell limitTweet:[TWTweet tweetWithDictionary:self.results[indexPath.row]]];
+        TWTweet *tweet = [[TWTweet alloc] initWithDictionary:self.results[indexPath.row]];
+        tweetCell.tweet.text = [tweetCell limitTweet:tweet.text];
+        
+        //tweetCell.tweet.text = [tweetCell limitTweet:[TWTweet tweetWithDictionary:self.results[indexPath.row]]];
 
         
         // indexPath.row always starts with 0, although the size of the array obtained from count method is counted from 1
@@ -200,7 +203,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         }
     }
     
-    return cell? cell : tweetCell;
+    return cell ? cell : tweetCell;
 
 }
 
@@ -216,9 +219,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
         
         // Create NSDictionary object so that you can specifiy the key to pick a value
           
+          
+        TWTweet *tweet = [[TWTweet alloc] initWithDictionary:self.results[indexPath.row]];
         // Assign whole tweet text to tweet property in detailViewController
-        detailViewController.tweet = [TWTweet tweetWithDictionary:self.results[indexPath.row]];
-        [self.navigationController pushViewController:detailViewController animated:YES];
+          detailViewController.tweet = tweet.text;
+          [self.navigationController pushViewController:detailViewController animated:YES];
     }
 }
 
@@ -229,7 +234,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 - (void)loadQuery
 {
     // isFinished turned NO, since API call starts here
-    self.infiniteScrollComponents.isLoading = YES;
+    self.infiniteScrollTrigger.isLoading = YES;
     self.searchState = UYLTwitterSearchStateLoading;
     
     // Need to research: what is percentEscapes?
@@ -317,7 +322,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     [self.tableView flashScrollIndicators];
     
     self.didEndEditingText = NO;
-    self.infiniteScrollComponents.isLoading = NO;
+    self.infiniteScrollTrigger.isLoading = NO;
 }
 
 #pragma mark - Search Bar Control
@@ -355,7 +360,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 #pragma mark - Scroll
 // http://nonbiri-tereka.hatenablog.com/entry/2014/03/02/092414
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if([self.infiniteScrollComponents shouldLoadNext:self.tableView] && !self.didLeaveCurrentViewController){
+    if([self.infiniteScrollTrigger shouldLoadNext:self.tableView] && !self.didLeaveCurrentViewController){
         [self loadQuery];
         [self.tableView reloadData];
     }

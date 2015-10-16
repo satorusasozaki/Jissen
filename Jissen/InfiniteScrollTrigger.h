@@ -1,5 +1,5 @@
 //
-//  ISComponents.h
+//  InfiniteScrollTrigger.h
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 10/5/15.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JITableViewController.h"
 
-@interface ISComponents : NSObject
+@interface InfiniteScrollTrigger : NSObject
 
 @property (nonatomic,assign) BOOL isLoading;
 

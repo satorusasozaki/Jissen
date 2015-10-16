@@ -1,19 +1,19 @@
 //
-//  ISComponents.m
+//  InfiniteScrollTrigger.m
 //  Jissen
 //
 //  Created by Satoru Sasozaki on 10/5/15.
 //  Copyright © 2015 Satoru Sasozaki. All rights reserved.
 //
 
-#import "ISComponents.h"
+#import "InfiniteScrollTrigger.h"
 
-@implementation ISComponents
+@implementation InfiniteScrollTrigger
 
 
 - (BOOL)shouldLoadNext:(UITableView *)tableView {
     BOOL shouldLoadNext;
-    if ( (self.isLoading == NO) && tableView.contentOffset.y >= (tableView.contentSize.height - tableView.bounds.size.height) ) {
+    if ( (!self.isLoading) && tableView.contentOffset.y >= (tableView.contentSize.height - tableView.bounds.size.height) ) {
         shouldLoadNext = YES;
     } else {
         shouldLoadNext = NO;
