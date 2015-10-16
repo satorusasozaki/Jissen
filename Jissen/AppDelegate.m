@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "JITableViewController.h"
 #import "JINavigationController.h"
-
+#import "JIHistoryViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -18,16 +18,21 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
     JITableViewController *tableViewController = [JITableViewController new];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.backgroundColor = [UIColor whiteColor];
     JINavigationController *nvController = [[JINavigationController alloc] initWithRootViewController:tableViewController];
-/*
-    [self.window addSubview:nvController.view];
-  */
     self.window.rootViewController = nvController;
     [self.window makeKeyAndVisible];
+    
+    NSManagedObjectContext *context = [self managedObjectContext];
+    tableViewController.managedObjectContext = context;
+    
+//    JIHistoryViewController *historyViewController = [[JIHistoryViewController alloc] init];
+//    historyViewController.managedObjectContext = context;
+    
+    
+    
+    
     return YES;
 }
 

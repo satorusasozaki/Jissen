@@ -22,6 +22,8 @@
 		60D1D9771BC4C5CB0095BF1E /* JIHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1D9761BC4C5CB0095BF1E /* JIHistoryViewController.m */; settings = {ASSET_TAGS = (); }; };
 		60D338C51BC79F6600ADF59A /* TWTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D338C41BC79F6600ADF59A /* TWTweet.m */; settings = {ASSET_TAGS = (); }; };
 		60D338C81BC8484E00ADF59A /* JITweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D338C71BC8484E00ADF59A /* JITweetCell.m */; settings = {ASSET_TAGS = (); }; };
+		60DE64891BD0675F005AD2FE /* Tweet+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DE64861BD0675F005AD2FE /* Tweet+CoreDataProperties.m */; settings = {ASSET_TAGS = (); }; };
+		60DE648A1BD0675F005AD2FE /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DE64881BD0675F005AD2FE /* Tweet.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,8 +59,8 @@
 		60CE85C11BB254F70086FB0D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		60CE85C21BB254F70086FB0D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Jissen.xcdatamodel; sourceTree = "<group>"; };
-		60CE85CD1BB254F70086FB0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		60CE85D21BB254F70086FB0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60CE85CD1BB254F70086FB0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Jissen/Assets.xcassets; sourceTree = "<group>"; };
+		60CE85D21BB254F70086FB0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Jissen/Info.plist; sourceTree = "<group>"; };
 		60CE85D71BB254F70086FB0D /* JissenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JissenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60CE85DB1BB254F70086FB0D /* JissenTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JissenTests.m; sourceTree = "<group>"; };
 		60CE85DD1BB254F70086FB0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,6 +75,10 @@
 		60D338C41BC79F6600ADF59A /* TWTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTweet.m; sourceTree = "<group>"; };
 		60D338C61BC8484E00ADF59A /* JITweetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JITweetCell.h; sourceTree = "<group>"; };
 		60D338C71BC8484E00ADF59A /* JITweetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JITweetCell.m; sourceTree = "<group>"; };
+		60DE64851BD0675F005AD2FE /* Tweet+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tweet+CoreDataProperties.h"; sourceTree = "<group>"; };
+		60DE64861BD0675F005AD2FE /* Tweet+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tweet+CoreDataProperties.m"; sourceTree = "<group>"; };
+		60DE64871BD0675F005AD2FE /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
+		60DE64881BD0675F005AD2FE /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,9 @@
 			isa = PBXGroup;
 			children = (
 				60CE85BD1BB254F70086FB0D /* Jissen */,
+				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
+				60CE85D21BB254F70086FB0D /* Info.plist */,
+				60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */,
 				60CE85DA1BB254F70086FB0D /* JissenTests */,
 				60CE85E51BB254F70086FB0D /* JissenUITests */,
 				60CE85BC1BB254F70086FB0D /* Products */,
@@ -125,27 +134,10 @@
 			children = (
 				60CE85C11BB254F70086FB0D /* AppDelegate.h */,
 				60CE85C21BB254F70086FB0D /* AppDelegate.m */,
-				60D1D9721BC4C3DD0095BF1E /* JIBaseTableViewController.h */,
-				60D1D9731BC4C3DD0095BF1E /* JIBaseTableViewController.m */,
-				60D1D9751BC4C5CB0095BF1E /* JIHistoryViewController.h */,
-				60D1D9761BC4C5CB0095BF1E /* JIHistoryViewController.m */,
-				6099A7E21BB39E0D00436AA1 /* JITableViewController.h */,
-				6099A7E31BB39E0D00436AA1 /* JITableViewController.m */,
-				6052CA4A1BBC980300D5036A /* JIBaseCell.h */,
-				6052CA4B1BBC980300D5036A /* JIBaseCell.m */,
-				60D338C61BC8484E00ADF59A /* JITweetCell.h */,
-				60D338C71BC8484E00ADF59A /* JITweetCell.m */,
-				603632381BBD088800C7FC4A /* JINavigationController.h */,
-				603632391BBD088800C7FC4A /* JINavigationController.m */,
-				6036323B1BBD13DD00C7FC4A /* JIDetailViewController.h */,
-				6036323C1BBD13DD00C7FC4A /* JIDetailViewController.m */,
-				60383E481BC32B6E00535350 /* ISComponents.h */,
-				60383E491BC32B6E00535350 /* ISComponents.m */,
-				60D338C31BC79F6600ADF59A /* TWTweet.h */,
-				60D338C41BC79F6600ADF59A /* TWTweet.m */,
-				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
-				60CE85D21BB254F70086FB0D /* Info.plist */,
-				60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */,
+				60DE648D1BD06882005AD2FE /* ViewControllers */,
+				60DE648E1BD068A3005AD2FE /* Views */,
+				60DE648F1BD068B2005AD2FE /* Models */,
+				60DE648C1BD06860005AD2FE /* CoreData */,
 				60CE85BE1BB254F70086FB0D /* Supporting Files */,
 			);
 			path = Jissen;
@@ -175,6 +167,56 @@
 				60CE85E81BB254F70086FB0D /* Info.plist */,
 			);
 			path = JissenUITests;
+			sourceTree = "<group>";
+		};
+		60DE648C1BD06860005AD2FE /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				60DE64851BD0675F005AD2FE /* Tweet+CoreDataProperties.h */,
+				60DE64871BD0675F005AD2FE /* Tweet.h */,
+				60DE64881BD0675F005AD2FE /* Tweet.m */,
+				60DE64861BD0675F005AD2FE /* Tweet+CoreDataProperties.m */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		60DE648D1BD06882005AD2FE /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				60D1D9721BC4C3DD0095BF1E /* JIBaseTableViewController.h */,
+				60D1D9731BC4C3DD0095BF1E /* JIBaseTableViewController.m */,
+				60D1D9751BC4C5CB0095BF1E /* JIHistoryViewController.h */,
+				60D1D9761BC4C5CB0095BF1E /* JIHistoryViewController.m */,
+				6099A7E21BB39E0D00436AA1 /* JITableViewController.h */,
+				6099A7E31BB39E0D00436AA1 /* JITableViewController.m */,
+				603632381BBD088800C7FC4A /* JINavigationController.h */,
+				603632391BBD088800C7FC4A /* JINavigationController.m */,
+				6036323B1BBD13DD00C7FC4A /* JIDetailViewController.h */,
+				6036323C1BBD13DD00C7FC4A /* JIDetailViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		60DE648E1BD068A3005AD2FE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6052CA4A1BBC980300D5036A /* JIBaseCell.h */,
+				6052CA4B1BBC980300D5036A /* JIBaseCell.m */,
+				60D338C61BC8484E00ADF59A /* JITweetCell.h */,
+				60D338C71BC8484E00ADF59A /* JITweetCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		60DE648F1BD068B2005AD2FE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				60383E481BC32B6E00535350 /* ISComponents.h */,
+				60383E491BC32B6E00535350 /* ISComponents.m */,
+				60D338C31BC79F6600ADF59A /* TWTweet.h */,
+				60D338C41BC79F6600ADF59A /* TWTweet.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -308,9 +350,11 @@
 				60D1D9771BC4C5CB0095BF1E /* JIHistoryViewController.m in Sources */,
 				60D338C51BC79F6600ADF59A /* TWTweet.m in Sources */,
 				60383E4A1BC32B6E00535350 /* ISComponents.m in Sources */,
+				60DE648A1BD0675F005AD2FE /* Tweet.m in Sources */,
 				60D1D9741BC4C3DD0095BF1E /* JIBaseTableViewController.m in Sources */,
 				60D338C81BC8484E00ADF59A /* JITweetCell.m in Sources */,
 				6036323A1BBD088800C7FC4A /* JINavigationController.m in Sources */,
+				60DE64891BD0675F005AD2FE /* Tweet+CoreDataProperties.m in Sources */,
 				60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */,
 				6052CA4C1BBC980300D5036A /* JIBaseCell.m in Sources */,
 				60CE85C01BB254F70086FB0D /* main.m in Sources */,
@@ -552,7 +596,8 @@
 				60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */,
 			);
 			currentVersion = 60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */;
-			path = Jissen.xcdatamodeld;
+			name = Jissen.xcdatamodeld;
+			path = Jissen/Jissen.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

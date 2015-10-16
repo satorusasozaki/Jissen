@@ -16,6 +16,7 @@
 #import "JIHistoryViewController.h"
 #import "JITweetCell.h"
 #import "TWTweet.h"
+#import "Tweet.h"
 
 // For connection statuts
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
@@ -125,9 +126,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     
     // http://stackoverflow.com/questions/2848055/add-button-to-navigationbar-programatically
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStylePlain target:self action:@selector(goToHistory:)];
-//    [myButton addTarget:self
-//                 action:@selector(myAction)
-//       forControlEvents:UIControlEventTouchUpInside];
+
     
     
     NSMutableArray *searchHistoryArray = [NSMutableArray array];
@@ -142,7 +141,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (void)goToHistory:(id)sender {
     JIHistoryViewController *historyViewController = [[JIHistoryViewController alloc] init];
-//    historyViewController.searchHistory = self.searchHistory;
+    historyViewController.managedObjectContext = self.managedObjectContext;
     self.didLeaveCurrentViewController = YES;
     [self.navigationController pushViewController:historyViewController animated:YES];
 }
@@ -179,14 +178,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     JIBaseCell *cell = nil;
     JITweetCell *tweetCell = nil;
     
-    // Needed to return plain cell just after viewDidLoad, because self.results is empty and cannot return anything since API call has not happen yet
-    // Since self.result is 0, numberOfRowsInsection returns just 1 and one cell will be displayed
     NSUInteger count = [self.results count];
-    if ((count == 0) && (indexPath.row == 0)) {
+    if (count == 0) {
         cell = [tableView dequeueReusableCellWithIdentifier:LoadCellIdentifier];
     } else {
         tweetCell = [tableView dequeueReusableCellWithIdentifier:ResultCellIdentifier];
-//    cell.tweet = [Tweet tweetWithDictionary:self.results[indexPath.row]];
     }
 
     
@@ -338,10 +334,11 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.searchBar.showsCancelButton = NO;
     [self.results removeAllObjects];
     
-    NSMutableArray *arrayFromUserDefaults = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"]];
-    [arrayFromUserDefaults addObject:self.searchBar.text];
-    [[NSUserDefaults standardUserDefaults] setObject:arrayFromUserDefaults forKey:@"searchedText"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+//    NSMutableArray *arrayFromUserDefaults = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"]];
+//    [arrayFromUserDefaults addObject:self.searchBar.text];
+//    [[NSUserDefaults standardUserDefaults] setObject:arrayFromUserDefaults forKey:@"searchedText"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self saveToCoreData:self.searchBar.text];
     self.query = self.searchBar.text;
     self.didEndEditingText = YES;
     [self loadQuery];
@@ -361,6 +358,19 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     if([self.infiniteScrollComponents shouldLoadNext:self.tableView] && !self.didLeaveCurrentViewController){
         [self loadQuery];
         [self.tableView reloadData];
+    }
+}
+
+
+#pragma mark - Core Data
+- (void)saveToCoreData:(NSString *)searchResult {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    Tweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet"inManagedObjectContext:context];
+    tweet.text = searchResult;
+    
+    NSError *error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 }
 

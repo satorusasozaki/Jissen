@@ -10,13 +10,12 @@
 
 @implementation JITweetCell
 
+// http://jslim.net/blog/2013/03/22/ios-create-uitableview-with-custom-cell-programmatically/
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UILabel *tweet = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, 300, 30)];
-        tweet.textColor = [UIColor blackColor];
-        tweet.font = [UIFont fontWithName:@"Arial" size:12.0f];
+        UILabel *tweet = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 300, 30)];
         [self addSubview:tweet];
         self.tweet = tweet;
     }

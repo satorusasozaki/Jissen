@@ -10,5 +10,6 @@
 #import "JIBaseTableViewController.h"
 
 @interface JIHistoryViewController : JIBaseTableViewController <UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 
 @end

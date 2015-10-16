@@ -8,10 +8,12 @@
 
 #import "JIHistoryViewController.h"
 #import "JIBaseCell.h"
+#import "Tweet.h"
 
 @interface JIHistoryViewController ()
 
-@property (nonatomic,strong) NSArray *searchHistoryArray;
+//@property (nonatomic,strong) NSArray *searchHistoryArray;
+@property (nonatomic,strong) NSArray *fetchedObjects;
 
 @end
 
@@ -22,21 +24,29 @@
     [self.tableView registerClass:[JIBaseCell class] forCellReuseIdentifier:@"historyCell"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+//    self.searchHistoryArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"];
     
-    self.searchHistoryArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"];
-    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Tweet" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    self.fetchedObjects = fetchedObjects;
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = [self.searchHistoryArray count];
-    return count > 0 ? count : 1;
+    return [self.fetchedObjects count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *historyCellIdentifier = @"historyCell";
     JIBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCellIdentifier];
-    cell.textLabel.text = [self.searchHistoryArray objectAtIndex:indexPath.row];
+    
+    Tweet *tweet = [self.fetchedObjects objectAtIndex:indexPath.row];
+    cell.textLabel.text = tweet.text;
+//    cell.textLabel.text = [self.fetchedObjects objectAtIndex:indexPath];
+    
     return cell;
 }
 @end

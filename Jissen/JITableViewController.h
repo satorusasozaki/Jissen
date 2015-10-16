@@ -12,6 +12,7 @@
 
 @interface JITableViewController : JIBaseTableViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSURLConnectionDataDelegate>
 
+@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 
 
 @end
