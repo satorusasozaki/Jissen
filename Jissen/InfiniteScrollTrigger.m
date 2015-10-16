@@ -14,11 +14,11 @@
 - (BOOL)shouldLoadNext:(UITableView *)tableView {
     BOOL shouldLoadNext;
     if ( (!self.isLoading) && tableView.contentOffset.y >= (tableView.contentSize.height - tableView.bounds.size.height) ) {
-        shouldLoadNext = YES;
+        return shouldLoadNext;
     } else {
-        shouldLoadNext = NO;
+        return !shouldLoadNext;
     }
-    return shouldLoadNext;
+
 }
 
 
