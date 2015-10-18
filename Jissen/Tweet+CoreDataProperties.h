@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Tweet (CoreDataProperties)
 
 @property (nullable, nonatomic, retain) NSString *text;
+@property (nullable, nonatomic, retain) NSDate *date;
 
 @end
 

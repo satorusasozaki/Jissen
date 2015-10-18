@@ -14,5 +14,6 @@
 @implementation Tweet (CoreDataProperties)
 
 @dynamic text;
+@dynamic date;
 
 @end

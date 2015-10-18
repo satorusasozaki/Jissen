@@ -13,5 +13,6 @@
 @property (nonatomic,strong) NSString *text;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
++ (instancetype)tweetWithDictionary:(NSDictionary *)d;
 
 @end

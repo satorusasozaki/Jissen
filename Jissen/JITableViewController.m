@@ -17,6 +17,7 @@
 #import "JITweetCell.h"
 #import "TWTweet.h"
 #import "Tweet.h"
+#import "AppDelegate.h"
 
 // For connection statuts
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
@@ -141,7 +142,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 
 - (void)goToHistory:(id)sender {
     JIHistoryViewController *historyViewController = [[JIHistoryViewController alloc] init];
-    historyViewController.managedObjectContext = self.managedObjectContext;
     self.didLeaveCurrentViewController = YES;
     [self.navigationController pushViewController:historyViewController animated:YES];
 }
@@ -366,15 +366,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     }
 }
 
-
 #pragma mark - Core Data
 - (void)saveToCoreData:(NSString *)searchResult {
-    NSManagedObjectContext *context = [self managedObjectContext];
+    NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
     Tweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet"inManagedObjectContext:context];
     tweet.text = searchResult;
-    
+    tweet.date = [NSDate date];
     NSError *error = nil;
-    if (![self.managedObjectContext save:&error]) {
+    if (![context save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 }

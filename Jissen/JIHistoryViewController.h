@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "JIBaseTableViewController.h"
 
-@interface JIHistoryViewController : JIBaseTableViewController <UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
-
+@interface JIHistoryViewController : JIBaseTableViewController <UITableViewDataSource>
+//@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 @end

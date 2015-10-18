@@ -12,6 +12,7 @@
 @interface JITweetCell : JIBaseCell
 
 @property (nonatomic, weak) UILabel *tweet;
+@property (nonatomic, weak) UILabel *date;
 - (NSString *)limitTweet:(NSString *)tweet;
 
 

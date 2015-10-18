@@ -16,7 +16,6 @@
 @implementation JIDetailViewController
 
 - (void)viewDidLoad {
-
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     CGRect labelFrame = CGRectMake(10.0f, 10.0f, 300.0f, 25.0f);

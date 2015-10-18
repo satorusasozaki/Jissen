@@ -10,6 +10,8 @@
 #import "JIBaseCell.h"
 #import "Tweet.h"
 
+#import "AppDelegate.h"
+
 @interface JIHistoryViewController ()
 
 //@property (nonatomic,strong) NSArray *searchHistoryArray;
@@ -22,15 +24,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView registerClass:[JIBaseCell class] forCellReuseIdentifier:@"historyCell"];
-    self.tableView.delegate = self;
     self.tableView.dataSource = self;
-//    self.searchHistoryArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"];
+    
+    NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Tweet" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Tweet" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     NSError *error;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     self.fetchedObjects = fetchedObjects;
     
 }
@@ -45,6 +47,18 @@
     
     Tweet *tweet = [self.fetchedObjects objectAtIndex:indexPath.row];
     cell.textLabel.text = tweet.text;
+    cell.detailTextLabel.text = @"detail text label";
+//    cell.detailTextLabel.text = tweet.date;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm"];
+    //Optionally for time zone conversions
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT-07:00"]];
+
+    NSString *dateDisplay = [formatter stringFromDate:tweet.date];
+    cell.detailTextLabel.text = dateDisplay;
+    
+                                 
+                                 
 //    cell.textLabel.text = [self.fetchedObjects objectAtIndex:indexPath];
     
     return cell;

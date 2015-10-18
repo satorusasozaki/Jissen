@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6028FA471BD20050006C489E /* TweetUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 6028FA461BD20050006C489E /* TweetUtility.m */; settings = {ASSET_TAGS = (); }; };
+		6028FA4A1BD20D40006C489E /* ver1_to_ver2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6028FA491BD20D40006C489E /* ver1_to_ver2.xcmappingmodel */; settings = {ASSET_TAGS = (); }; };
 		6036323A1BBD088800C7FC4A /* JINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603632391BBD088800C7FC4A /* JINavigationController.m */; settings = {ASSET_TAGS = (); }; };
 		6036323D1BBD13DD00C7FC4A /* JIDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036323C1BBD13DD00C7FC4A /* JIDetailViewController.m */; settings = {ASSET_TAGS = (); }; };
 		60383E4A1BC32B6E00535350 /* InfiniteScrollTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = 60383E491BC32B6E00535350 /* InfiniteScrollTrigger.m */; settings = {ASSET_TAGS = (); }; };
 		6052CA4C1BBC980300D5036A /* JIBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6052CA4B1BBC980300D5036A /* JIBaseCell.m */; settings = {ASSET_TAGS = (); }; };
+		6067F35E1BD3766200E4FF19 /* JIHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6067F35D1BD3766200E4FF19 /* JIHistoryCell.m */; settings = {ASSET_TAGS = (); }; };
 		6099A7E41BB39E0D00436AA1 /* JITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099A7E31BB39E0D00436AA1 /* JITableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		60CE85C01BB254F70086FB0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85BF1BB254F70086FB0D /* main.m */; };
 		60CE85C31BB254F70086FB0D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE85C21BB254F70086FB0D /* AppDelegate.m */; };
@@ -44,6 +47,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6028FA451BD20050006C489E /* TweetUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetUtility.h; sourceTree = "<group>"; };
+		6028FA461BD20050006C489E /* TweetUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetUtility.m; sourceTree = "<group>"; };
+		6028FA481BD20C33006C489E /* Jissen 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jissen 2.xcdatamodel"; sourceTree = "<group>"; };
+		6028FA491BD20D40006C489E /* ver1_to_ver2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ver1_to_ver2.xcmappingmodel; sourceTree = "<group>"; };
 		603632381BBD088800C7FC4A /* JINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JINavigationController.h; sourceTree = "<group>"; };
 		603632391BBD088800C7FC4A /* JINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JINavigationController.m; sourceTree = "<group>"; };
 		6036323B1BBD13DD00C7FC4A /* JIDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIDetailViewController.h; sourceTree = "<group>"; };
@@ -52,6 +59,8 @@
 		60383E491BC32B6E00535350 /* InfiniteScrollTrigger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfiniteScrollTrigger.m; sourceTree = "<group>"; };
 		6052CA4A1BBC980300D5036A /* JIBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIBaseCell.h; sourceTree = "<group>"; };
 		6052CA4B1BBC980300D5036A /* JIBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JIBaseCell.m; sourceTree = "<group>"; };
+		6067F35C1BD3766200E4FF19 /* JIHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIHistoryCell.h; sourceTree = "<group>"; };
+		6067F35D1BD3766200E4FF19 /* JIHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JIHistoryCell.m; sourceTree = "<group>"; };
 		6099A7E21BB39E0D00436AA1 /* JITableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JITableViewController.h; sourceTree = "<group>"; };
 		6099A7E31BB39E0D00436AA1 /* JITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JITableViewController.m; sourceTree = "<group>"; };
 		60CE85BB1BB254F70086FB0D /* Jissen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jissen.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,6 +118,7 @@
 		60CE85B21BB254F70086FB0D = {
 			isa = PBXGroup;
 			children = (
+				6028FA491BD20D40006C489E /* ver1_to_ver2.xcmappingmodel */,
 				60CE85BD1BB254F70086FB0D /* Jissen */,
 				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
 				60CE85D21BB254F70086FB0D /* Info.plist */,
@@ -176,6 +186,8 @@
 				60DE64871BD0675F005AD2FE /* Tweet.h */,
 				60DE64881BD0675F005AD2FE /* Tweet.m */,
 				60DE64861BD0675F005AD2FE /* Tweet+CoreDataProperties.m */,
+				6028FA451BD20050006C489E /* TweetUtility.h */,
+				6028FA461BD20050006C489E /* TweetUtility.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -204,6 +216,8 @@
 				6052CA4B1BBC980300D5036A /* JIBaseCell.m */,
 				60D338C61BC8484E00ADF59A /* JITweetCell.h */,
 				60D338C71BC8484E00ADF59A /* JITweetCell.m */,
+				6067F35C1BD3766200E4FF19 /* JIHistoryCell.h */,
+				6067F35D1BD3766200E4FF19 /* JIHistoryCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -349,6 +363,7 @@
 			files = (
 				60D1D9771BC4C5CB0095BF1E /* JIHistoryViewController.m in Sources */,
 				60D338C51BC79F6600ADF59A /* TWTweet.m in Sources */,
+				6028FA471BD20050006C489E /* TweetUtility.m in Sources */,
 				60383E4A1BC32B6E00535350 /* InfiniteScrollTrigger.m in Sources */,
 				60DE648A1BD0675F005AD2FE /* Tweet.m in Sources */,
 				60D1D9741BC4C3DD0095BF1E /* JIBaseTableViewController.m in Sources */,
@@ -361,6 +376,8 @@
 				6099A7E41BB39E0D00436AA1 /* JITableViewController.m in Sources */,
 				60CE85CC1BB254F70086FB0D /* Jissen.xcdatamodeld in Sources */,
 				6036323D1BBD13DD00C7FC4A /* JIDetailViewController.m in Sources */,
+				6028FA4A1BD20D40006C489E /* ver1_to_ver2.xcmappingmodel in Sources */,
+				6067F35E1BD3766200E4FF19 /* JIHistoryCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,9 +610,10 @@
 		60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				6028FA481BD20C33006C489E /* Jissen 2.xcdatamodel */,
 				60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */,
 			);
-			currentVersion = 60CE85CB1BB254F70086FB0D /* Jissen.xcdatamodel */;
+			currentVersion = 6028FA481BD20C33006C489E /* Jissen 2.xcdatamodel */;
 			name = Jissen.xcdatamodeld;
 			path = Jissen/Jissen.xcdatamodeld;
 			sourceTree = "<group>";

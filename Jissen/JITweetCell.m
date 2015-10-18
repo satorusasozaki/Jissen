@@ -18,6 +18,10 @@
         UILabel *tweet = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 300, 30)];
         [self.contentView addSubview:tweet];
         self.tweet = tweet;
+        
+//        UILabel *date = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 300, 30)];
+//        [self.contentView addSubview:date];
+//        self.date = date;
     }
     return self;
 }

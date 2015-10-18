@@ -22,17 +22,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     JINavigationController *nvController = [[JINavigationController alloc] initWithRootViewController:tableViewController];
     self.window.rootViewController = nvController;
-    [self.window makeKeyAndVisible];
-    
+    [self.window makeKeyAndVisible];    
     NSManagedObjectContext *context = [self managedObjectContext];
-    tableViewController.managedObjectContext = context;
     
-//    JIHistoryViewController *historyViewController = [[JIHistoryViewController alloc] init];
-//    historyViewController.managedObjectContext = context;
-    
-    
-    
-    
+//    tableViewController.managedObjectContext = context;
     return YES;
 }
 
@@ -93,7 +86,25 @@
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Jissen.sqlite"];
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    
+    NSDictionary *options = [NSDictionary
+                             dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES],
+                             NSInferMappingModelAutomaticallyOption,
+                             nil];
+    
+    
+//    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+//                                                   configuration:nil
+//                                                             URL:storeURL
+//                                                         options:options error:&error]) {
+//        
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        abort();
+//    }
+    
+    
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         // Report any error we got.
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
