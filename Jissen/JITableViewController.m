@@ -237,8 +237,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     self.infiniteScrollTrigger.isLoading = YES;
     self.searchState = UYLTwitterSearchStateLoading;
     
-    // Need to research: what is percentEscapes?
-    NSString *encodedQuery = [self.query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    // http://stackoverflow.com/questions/8086584/objective-c-url-encoding
+    NSString *encodedQuery = [self.query stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     ACAccountType *accountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [self.accountStore requestAccessToAccountsWithType:accountType
                                                options:NULL
@@ -259,9 +259,33 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
                  slRequest.account = [accounts lastObject];
                  NSURLRequest *request = [slRequest preparedURLRequest];
                  dispatch_async(dispatch_get_main_queue(), ^{
-                     self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+                     self.connection = [[NSURLSession alloc] initWithRequest:request delegate:self];
                      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                  });
+                 
+                 
+//                 NSURLRequest *request = [NSURLRequest requestWithURL:
+//                                          [NSURL URLWithString:londonWeatherUrl]];
+//                 
+//                 [NSURLConnection sendAsynchronousRequest:request
+//                                                    queue:[NSOperationQueue mainQueue]
+//                                        completionHandler:^(NSURLResponse *response,
+//                                                            NSData *data,
+//                                                            NSError *connectionError) {
+//                                            // handle response
+//                                        }];
+                 
+                 
+                 
+//                 NSURLSession *session = [NSURLSession sharedSession];
+//                 [[session dataTaskWithURL:[NSURL URLWithString:londonWeatherUrl]
+//                         completionHandler:^(NSData *data,
+//                                             NSURLResponse *response,
+//                                             NSError *error) {
+//                             // handle response
+//                             
+//                         }] resume];
+                 
              } else {
                  NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
                  NSDictionary *parameters = @{@"count" : RESULTS_PERPAGE, @"q" : encodedQuery, @"max_id" : self.max_id};

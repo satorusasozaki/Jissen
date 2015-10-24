@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableView registerClass:[JIBaseCell class] forCellReuseIdentifier:@"historyCell"];
+//    [self.tableView registerClass:[JIBaseCell class] forCellReuseIdentifier:@"historyCell"];
     self.tableView.dataSource = self;
     
     NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
@@ -44,6 +44,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *historyCellIdentifier = @"historyCell";
     JIBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:historyCellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[JIBaseCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:historyCellIdentifier];
+    }
     
     Tweet *tweet = [self.fetchedObjects objectAtIndex:indexPath.row];
     cell.textLabel.text = tweet.text;
