@@ -18,6 +18,7 @@
 #import "TWTweet.h"
 #import "Tweet.h"
 #import "AppDelegate.h"
+#import "MBProgressHUD.h"
 
 // For connection statuts
 typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
@@ -312,6 +313,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
              });
          }
      }];
+    
+    
+
 }
 
 #pragma mark - Connection Control
@@ -400,6 +404,18 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     if (![context save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
+}
+
+#pragma mark - 
+- (void)fireMBProgressHUD {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        // Do something...
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    });
+
 }
 
 
