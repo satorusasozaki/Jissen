@@ -237,6 +237,8 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     // isFinished turned NO, since API call starts here
     self.infiniteScrollTrigger.isLoading = YES;
     self.searchState = UYLTwitterSearchStateLoading;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     
     // http://stackoverflow.com/questions/8086584/objective-c-url-encoding
     NSString *encodedQuery = [self.query stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
@@ -245,7 +247,7 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
                                                options:NULL
                                             completion:^(BOOL granted, NSError *error)
      {
-         if (granted)
+         if (granted && encodedQuery != nil)
          {
              if (self.max_id == nil) {
                  NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
@@ -259,33 +261,15 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
                  NSArray *accounts = [self.accountStore accountsWithAccountType:accountType];
                  slRequest.account = [accounts lastObject];
                  NSURLRequest *request = [slRequest preparedURLRequest];
+
                  dispatch_async(dispatch_get_main_queue(), ^{
-                     self.connection = [[NSURLSession alloc] initWithRequest:request delegate:self];
+                     self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
                      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                     [MBProgressHUD hideHUDForView:self.view animated:YES];
+
                  });
-                 
-                 
-//                 NSURLRequest *request = [NSURLRequest requestWithURL:
-//                                          [NSURL URLWithString:londonWeatherUrl]];
-//                 
-//                 [NSURLConnection sendAsynchronousRequest:request
-//                                                    queue:[NSOperationQueue mainQueue]
-//                                        completionHandler:^(NSURLResponse *response,
-//                                                            NSData *data,
-//                                                            NSError *connectionError) {
-//                                            // handle response
-//                                        }];
-                 
-                 
-                 
-//                 NSURLSession *session = [NSURLSession sharedSession];
-//                 [[session dataTaskWithURL:[NSURL URLWithString:londonWeatherUrl]
-//                         completionHandler:^(NSData *data,
-//                                             NSURLResponse *response,
-//                                             NSError *error) {
-//                             // handle response
-//                             
-//                         }] resume];
+
+
                  
              } else {
                  NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
@@ -299,10 +283,14 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
                  NSArray *accounts = [self.accountStore accountsWithAccountType:accountType];
                  slRequest.account = [accounts lastObject];
                  NSURLRequest *request = [slRequest preparedURLRequest];
+
                  dispatch_async(dispatch_get_main_queue(), ^{
                      self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
                      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                     [MBProgressHUD hideHUDForView:self.view animated:YES];
+
                  });
+
              }
          }
          else
@@ -366,11 +354,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     self.searchBar.showsCancelButton = NO;
     [self.results removeAllObjects];
-    
-//    NSMutableArray *arrayFromUserDefaults = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"searchedText"]];
-//    [arrayFromUserDefaults addObject:self.searchBar.text];
-//    [[NSUserDefaults standardUserDefaults] setObject:arrayFromUserDefaults forKey:@"searchedText"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
     [self saveToCoreData:self.searchBar.text];
     self.query = self.searchBar.text;
     self.didEndEditingText = YES;
@@ -380,9 +363,9 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
 #pragma mark - Refresh Control
 
 - (void)handleRefresh:(id)sender {
-    [self.results removeAllObjects];
-    [self loadQuery];
-    [self.tableView reloadData];
+        [self.results removeAllObjects];
+        [self loadQuery];
+        [self.tableView reloadData];
 }
 
 #pragma mark - Scroll
@@ -406,17 +389,6 @@ typedef NS_ENUM(NSUInteger, UYLTwitterSearchState) {
     }
 }
 
-#pragma mark - 
-- (void)fireMBProgressHUD {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        // Do something...
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        });
-    });
-
-}
 
 
 

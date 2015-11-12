@@ -23,7 +23,6 @@
     JINavigationController *nvController = [[JINavigationController alloc] initWithRootViewController:tableViewController];
     self.window.rootViewController = nvController;
     [self.window makeKeyAndVisible];    
-    NSManagedObjectContext *context = [self managedObjectContext];
     
 //    tableViewController.managedObjectContext = context;
     return YES;
