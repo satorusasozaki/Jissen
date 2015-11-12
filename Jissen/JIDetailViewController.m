@@ -11,11 +11,9 @@
 
 @interface JIDetailViewController ()
 @property (nonatomic,strong) UILabel *tweetLabel;
-// In the class header or class extension:
 @property (nonatomic, assign) BOOL didSetupConstraints;
 @property (nonatomic, assign) CGRect labelFrame;
 
-// ...
 
 @end
 
@@ -24,25 +22,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-//    labelFrame.origin.x = 37.5f;
-//    labelFrame.origin.y = 200.0f;
-//    [self.tweetLabel autoCenterInSuperview];
-//    [self.tweetLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.view];
-//    [self.tweetLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self.view];
-
     [self.view addSubview:self.tweetLabel];
     [self.view setNeedsUpdateConstraints];
 }
 
-
-
-// In the class implementation:
 - (void)updateViewConstraints {
     if (!self.didSetupConstraints) {
         self.view.backgroundColor = [UIColor whiteColor];
-        [self.tweetLabel autoCenterInSuperview];
-     //   [self.tweetLabel autoSetDimensionsToSize:CGSizeMake(50.0, 50.0)];
-        [self.tweetLabel sizeToFit];
+//        [self.tweetLabel autoCenterInSuperview];
+        [self.tweetLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.view withOffset:-10.0f];
+        [self.tweetLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.view withOffset:10.0f];
+        [self.tweetLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.view withOffset:75];
+//        [self.tweetLabel sizeToFit];
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -52,13 +43,14 @@
 - (UILabel *)tweetLabel
 {
     if (!_tweetLabel) {
-        CGRect labelFrame = CGRectMake(10.0f, 10.0f, 300.0f, 25.0f);
-        _tweetLabel = [[UILabel alloc] initWithFrame:labelFrame];
+//        CGRect labelFrame = CGRectMake(10.0f, 10.0f, 300.0f, 25.0f);
+        _tweetLabel = [UILabel newAutoLayoutView];
         _tweetLabel.textColor = [UIColor blackColor];
+        _tweetLabel.font = [_tweetLabel.font fontWithSize:20];
         _tweetLabel.text = self.tweet;
         _tweetLabel.numberOfLines = 0;
-        _tweetLabel.textAlignment =  NSTextAlignmentCenter;
-        _tweetLabel.layer.borderColor = [UIColor blackColor].CGColor;
+        _tweetLabel.textAlignment =  NSTextAlignmentLeft;
+        _tweetLabel.layer.borderColor = [UIColor whiteColor].CGColor;
         _tweetLabel.layer.borderWidth = 1.0;
     }
     return _tweetLabel;
