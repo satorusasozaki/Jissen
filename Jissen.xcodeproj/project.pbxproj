@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6028FA471BD20050006C489E /* TweetUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 6028FA461BD20050006C489E /* TweetUtility.m */; };
 		6028FA4A1BD20D40006C489E /* ver1_to_ver2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6028FA491BD20D40006C489E /* ver1_to_ver2.xcmappingmodel */; };
-		602FB0E71BF6F67300A5374B /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 602FB0E61BF6F67300A5374B /* app_icon.png */; };
 		6036323A1BBD088800C7FC4A /* JINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603632391BBD088800C7FC4A /* JINavigationController.m */; };
 		6036323D1BBD13DD00C7FC4A /* JIDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036323C1BBD13DD00C7FC4A /* JIDetailViewController.m */; };
 		60383E4A1BC32B6E00535350 /* InfiniteScrollTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = 60383E491BC32B6E00535350 /* InfiniteScrollTrigger.m */; };
@@ -54,7 +53,6 @@
 		6028FA461BD20050006C489E /* TweetUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetUtility.m; sourceTree = "<group>"; };
 		6028FA481BD20C33006C489E /* Jissen 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jissen 2.xcdatamodel"; sourceTree = "<group>"; };
 		6028FA491BD20D40006C489E /* ver1_to_ver2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ver1_to_ver2.xcmappingmodel; sourceTree = "<group>"; };
-		602FB0E61BF6F67300A5374B /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
 		603632381BBD088800C7FC4A /* JINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JINavigationController.h; sourceTree = "<group>"; };
 		603632391BBD088800C7FC4A /* JINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JINavigationController.m; sourceTree = "<group>"; };
 		6036323B1BBD13DD00C7FC4A /* JIDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIDetailViewController.h; sourceTree = "<group>"; };
@@ -122,22 +120,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		602FB0E51BF6F5D700A5374B /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				602FB0E61BF6F67300A5374B /* app_icon.png */,
-			);
-			name = Source;
-			path = Jissen;
-			sourceTree = "<group>";
-		};
 		60CE85B21BB254F70086FB0D = {
 			isa = PBXGroup;
 			children = (
 				6028FA491BD20D40006C489E /* ver1_to_ver2.xcmappingmodel */,
 				60CE85BD1BB254F70086FB0D /* Jissen */,
 				60CE85CD1BB254F70086FB0D /* Assets.xcassets */,
-				602FB0E51BF6F5D700A5374B /* Source */,
 				60CE85D21BB254F70086FB0D /* Info.plist */,
 				60CE85CA1BB254F70086FB0D /* Jissen.xcdatamodeld */,
 				60CE85DA1BB254F70086FB0D /* JissenTests */,
@@ -375,7 +363,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				602FB0E71BF6F67300A5374B /* app_icon.png in Resources */,
 				60CE85CE1BB254F70086FB0D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
