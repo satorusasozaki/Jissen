@@ -29,11 +29,9 @@
 - (void)updateViewConstraints {
     if (!self.didSetupConstraints) {
         self.view.backgroundColor = [UIColor whiteColor];
-//        [self.tweetLabel autoCenterInSuperview];
         [self.tweetLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.view withOffset:-10.0f];
         [self.tweetLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.view withOffset:10.0f];
         [self.tweetLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.view withOffset:75];
-//        [self.tweetLabel sizeToFit];
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -43,7 +41,6 @@
 - (UILabel *)tweetLabel
 {
     if (!_tweetLabel) {
-//        CGRect labelFrame = CGRectMake(10.0f, 10.0f, 300.0f, 25.0f);
         _tweetLabel = [UILabel newAutoLayoutView];
         _tweetLabel.textColor = [UIColor blackColor];
         _tweetLabel.font = [_tweetLabel.font fontWithSize:20];
